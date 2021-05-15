@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthenticationService,
-    private permisisonService: PermissionService,
+    private permissionService: PermissionService,
     private roleService: RoleService,
     private cookieService: CookieService,
     private alertifyService: AlertifyService
@@ -88,80 +88,100 @@ export class LoginComponent implements OnInit, OnDestroy {
   onChangeRemember(args) {
     this.remember = args.target.checked;
   }
-  login() {
+  authentication() {
+    return this.authService
+      .login(this.username, this.password).toPromise();
+  }
+  async login() {
     if (!this.username || !this.password) {
       return;
     }
     this.busy = true;
-    const returnUrl = this.route.snapshot.queryParams.returnUrl || '/ec/execution/todolist-2';
-    this.authService
-      .login(this.username, this.password)
-      .pipe(
-        finalize(() => (this.busy = false))
-        )
-      .subscribe(
-        async () => {
-          this.role = JSON.parse(localStorage.getItem('user')).user.role;
-          const userId = JSON.parse(localStorage.getItem('user')).user.id;
+    try {
+      console.log('Begin authenication');
+      await this.authentication();
+      console.log('End authenication');
 
-          const res = await this.authService.getBuildingUserByUserID(userId).toPromise();
-          localStorage.setItem('building', JSON.stringify(res.data));
-          this.authService.setBuildingValue(res.data as IBuilding[]);
+      this.role = JSON.parse(localStorage.getItem('user')).user.role;
+      const userId = JSON.parse(localStorage.getItem('user')).user.id;
+      console.log('Begin getBuildingUserByUserID');
 
-          const roleUser = await this.roleService.getRoleByUserID(userId).toPromise();
-          localStorage.setItem('level', JSON.stringify(roleUser));
-          this.authService.setRoleValue(roleUser as IRole);
+      const res = await this.authService.getBuildingUserByUserID(userId).toPromise();
+      console.log('end getBuildingUserByUserID', res);
 
-          const userRole: IUserRole = {
-            isLock: true,
-            userID: userId,
-            roleID: roleUser.id
-          };
-          this.roleService.isLock(userRole).subscribe((isLock: boolean) => {
-            if (isLock) {
-              this.alertifyService.error('Your account has been locked!!!');
-              return;
-            }
-          });
-          const functions = await this.permisisonService.getActionInFunctionByRoleID(roleUser.id).toPromise();
-          this.functions = functions as FunctionSystem[];
-          localStorage.setItem("functions", JSON.stringify(functions));
-          this.authService.setFunctions(functions as any);
-          this.alertifyService.success('Login Success!!');
+      localStorage.setItem('building', JSON.stringify(res.data));
+      this.authService.setBuildingValue(res.data as IBuilding[]);
 
-          const currentLang = localStorage.getItem('lang');
-          if (currentLang) {
-            localStorage.setItem('lang', currentLang);
-          } else {
-            localStorage.setItem('lang', 'vi');
-          }
+      console.log('Begin getRoleByUserID');
 
-          if (this.remember) {
-            this.cookieService.set('remember', 'Yes');
-            this.cookieService.set('username', this.user.username);
-            this.cookieService.set('password', this.user.password);
-            this.cookieService.set('systemCode', this.user.systemCode.toString());
-          } else {
-            this.cookieService.set('remember', 'No');
-            this.cookieService.set('username', '');
-            this.cookieService.set('password', '');
-            this.cookieService.set('systemCode', '');
-          }
-          setTimeout(() => {
-            const check = this.checkRole();
-            if (check) {
-              const uri = decodeURI(this.uri);
-              this.router.navigate([uri]);
-            } else {
-              this.router.navigate(['/ec/execution/todolist-2']);
-            }
+      const roleUser = await this.roleService.getRoleByUserID(userId).toPromise();
+      localStorage.setItem('level', JSON.stringify(roleUser));
+      this.authService.setRoleValue(roleUser as IRole);
+      console.log('end getRoleByUserID');
 
-          });
-        },
-        () => {
-          this.loginError = true;
+      console.log('Begin getMenu', userId);
+
+      const menus = await this.permissionService.getMenuByUserPermission(userId).toPromise();
+      localStorage.setItem('menus', JSON.stringify(menus));
+      console.log('end getMenu', menus);
+
+      const userRole: IUserRole = {
+        isLock: true,
+        userID: userId,
+        roleID: roleUser.id
+      };
+      console.log('Begin isLock');
+
+      const isLock = await this.roleService.isLock(userRole).toPromise();
+      if (isLock) {
+        this.alertifyService.error('Your account has been locked!!!');
+        return;
+      }
+      console.log('end isLock');
+
+      console.log('Begin getActionInFunctionByRoleID');
+
+      const functions = await this.permissionService.getActionInFunctionByRoleID(roleUser.id).toPromise();
+      this.functions = functions as FunctionSystem[];
+      localStorage.setItem("functions", JSON.stringify(functions));
+      this.authService.setFunctions(functions as any);
+
+      const currentLang = localStorage.getItem('lang');
+      if (currentLang) {
+        localStorage.setItem('lang', currentLang);
+      } else {
+        localStorage.setItem('lang', 'vi');
+      }
+
+      if (this.remember) {
+        this.cookieService.set('remember', 'Yes');
+        this.cookieService.set('username', this.user.username);
+        this.cookieService.set('password', this.user.password);
+        this.cookieService.set('systemCode', this.user.systemCode.toString());
+      } else {
+        this.cookieService.set('remember', 'No');
+        this.cookieService.set('username', '');
+        this.cookieService.set('password', '');
+        this.cookieService.set('systemCode', '');
+      }
+      setTimeout(() => {
+        const check = this.checkRole();
+        if (check) {
+          const uri = decodeURI(this.uri);
+          this.router.navigate([uri]);
+        } else {
+          this.router.navigate(['/ec/execution/todolist-2']);
         }
-      );
+
+      });
+      console.log('end getActionInFunctionByRoleID');
+      this.alertifyService.success('Login Success!!');
+      this.busy = false;
+
+    } catch (error) {
+      this.busy = true;
+      this.loginError = true;
+    }
   }
 
   ngOnDestroy(): void {

@@ -130,7 +130,7 @@ export class Consumption2Component extends BaseComponent implements OnInit {
     query =
       e.text !== '' ? query.where('name', 'contains', e.text, true) : query;
     // pass the filter data source, filter query to updateData method.
-    e.updateData(this.buildings as any, query);
+    e.updateData(this.buildings as any, query as any);
   }
   onChangeBuilding(args) {
     this.buildingID = args.itemData.id;

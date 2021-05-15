@@ -4,14 +4,16 @@ using DMR_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DMR_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210514043810_AddIsDeleteAdditionTable")]
+    partial class AddIsDeleteAdditionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,6 +94,9 @@ namespace DMR_API.Migrations
                     b.Property<int>("BPFCEstablishID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BuildingID")
+                        .HasColumnType("int");
+
                     b.Property<int>("ChemicalID")
                         .HasColumnType("int");
 
@@ -122,16 +127,16 @@ namespace DMR_API.Migrations
                     b.Property<string>("Remark")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("WorkerID")
+                    b.Property<string>("WorkerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("BPFCEstablishID");
 
-                    b.HasIndex("ChemicalID");
+                    b.HasIndex("BuildingID");
 
-                    b.HasIndex("LineID");
+                    b.HasIndex("ChemicalID");
 
                     b.ToTable("Additions");
                 });
@@ -2112,15 +2117,13 @@ namespace DMR_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DMR_API.Models.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingID");
+
                     b.HasOne("DMR_API.Models.Ingredient", "Ingredient")
                         .WithMany()
                         .HasForeignKey("ChemicalID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DMR_API.Models.Building", "Building")
-                        .WithMany()
-                        .HasForeignKey("LineID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

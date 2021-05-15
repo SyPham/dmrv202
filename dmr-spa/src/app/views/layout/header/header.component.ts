@@ -119,10 +119,25 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   getMenu() {
-    this.permissionService.getMenuByUserPermission(this.userid).subscribe((menus: []) => {
-      this.menus = menus;
-      localStorage.setItem('menus', JSON.stringify(menus));
-    });
+    if (localStorage.getItem('menus') === `undefined`) {
+      this.spinner.show();
+      console.log('Header ------- Begin getMenuByUserPermission');
+      this.permissionService.getMenuByUserPermission(this.userid).subscribe((data: []) => {
+        this.menus = data;
+        localStorage.setItem('menus', JSON.stringify(data));
+        this.spinner.hide();
+
+      }, (err) => {
+        this.spinner.hide();
+      });
+      console.log('Header ------- end getMenuByUserPermission');
+    } else {
+      setTimeout(() => {
+        console.log('Header ------- Begin getlocalstore menu');
+        const menus = JSON.parse(localStorage.getItem('menus')) || [];
+        this.menus = menus;
+      });
+    }
   }
   areOtherRoles() {
     const roles = [this.ADMIN, this.SUPERVISOR, this.STAFF];
@@ -177,12 +192,14 @@ export class HeaderComponent implements OnInit, AfterViewInit {
           L10n.load(this.vi);
           setCulture('vi');
         }, 500);
+        this.spinner.show();
         location.reload();
       } else {
         this.dataService.setValueLocale(args.itemData.id);
         setTimeout(() => {
           L10n.load(this.en);
           setCulture('en-US');
+          this.spinner.show();
           location.reload();
         }, 500);
       }

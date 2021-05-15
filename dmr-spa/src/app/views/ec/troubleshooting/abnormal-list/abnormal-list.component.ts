@@ -89,7 +89,7 @@ export class AbnormalListComponent implements OnInit, AfterViewInit {
     // frame the query based on search string with filter type.
     query = e.text !== '' ? query.where('name', 'contains', e.text, true) : query;
     // pass the filter data source, filter query to updateData method.
-    e.updateData(this.IngredientData, query);
+    e.updateData(this.IngredientData, query as any);
   }
 
   public onFilteringBatch: EmitType<FilteringEventArgs> = (
@@ -99,7 +99,7 @@ export class AbnormalListComponent implements OnInit, AfterViewInit {
     // frame the query based on search string with filter type.
     query = e.text !== '' ? query.where('batchName', 'contains', e.text, true) : query;
     // pass the filter data source, filter query to updateData method.
-    e.updateData(this.IngredientData, query);
+    e.updateData(this.IngredientData, query as any);
   }
 
   onChangeIngredientName(args) {

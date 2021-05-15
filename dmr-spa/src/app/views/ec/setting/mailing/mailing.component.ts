@@ -24,8 +24,8 @@ export class MailingComponent implements OnInit {
   frequencyItem = '';
   reportOption = ['Done List', 'Cost'];
   reportItem = '';
-  fields: object = { text: 'Username', value: 'ID' };
-  userData: { ID: any; Username: any; Email: any; }[];
+  fields: object = { text: 'username', value: 'id' };
+  userData: { id: any; username: any; email: any; }[];
   box = 'Box';
   timeSend = new Date();
   datetimeSend = new Date();
@@ -50,9 +50,9 @@ export class MailingComponent implements OnInit {
     this.buildingUserService.getAllUsers(1, 1000).subscribe(res => {
       const data = res.result.map((i: any) => {
         return {
-          ID: i.ID,
-          Username: i.Username,
-          Email: i.Email,
+          id: i.id,
+          username: i.username,
+          email: i.email,
         };
       });
       this.userData = data;
@@ -97,14 +97,14 @@ export class MailingComponent implements OnInit {
     this.datetimeSend = args.value;
   }
   removing(args) {
-    const filteredItems = this.userIDList.filter(item => item !== args.itemData.ID);
+    const filteredItems = this.userIDList.filter(item => item !== args.itemData.id);
     this.userIDList = filteredItems;
-    this.userList = this.userList.filter(item => item.id !== args.itemData.ID);
+    this.userList = this.userList.filter(item => item.id !== args.itemData.id);
   }
   onSelectUsername(args) {
     const data = args.itemData;
-    this.userIDList.push(data.ID);
-    this.userList.push({ mailingID: 0 , id: data.ID, email: data.Email});
+    this.userIDList.push(data.id);
+    this.userList.push({ mailingID: 0 , id: data.id, email: data.email});
   }
   update() {
     this.mailingService.update(this.mailing).subscribe(() => {

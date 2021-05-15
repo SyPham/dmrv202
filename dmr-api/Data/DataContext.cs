@@ -74,6 +74,7 @@ namespace DMR_API.Data
         public DbSet<ActionInFunctionSystem> ActionInFunctionSystem { get; set; }
 
         public DbSet<FunctionSystem> FunctionSystem { get; set; }
+        public DbSet<Addition> Additions { get; set; }
         public DbSet<SubpackageCapacity> SubpackageCapacity { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -85,50 +86,6 @@ namespace DMR_API.Data
 
             modelBuilder.Entity<ActionInFunctionSystem>()
             .HasKey(a => new { a.ActionID, a.FunctionSystemID });
-            //var periodList = new List<Period>()
-            //{
-            //    {new Period
-            //    {
-            //        LunchTimeID = 7,
-            //        Sequence = 1,
-            //        StartTime = new DateTime(ct.Year,ct.Month,ct.Day, 7, 00,00),
-            //        EndTime = new DateTime(ct.Year,ct.Month,ct.Day, 9, 00,00),
-
-            //    }},
-            //     {new Period
-            //    {
-            //          LunchTimeID = 7,
-            //        Sequence = 2,
-            //        StartTime = new DateTime(ct.Year,ct.Month,ct.Day, 9, 00,00),
-            //        EndTime = new DateTime(ct.Year,ct.Month,ct.Day, 11, 00,00),
-
-            //    }},
-            //      {new Period
-            //    {
-            //           LunchTimeID = 7,
-            //        Sequence = 3,
-            //        StartTime = new DateTime(ct.Year,ct.Month,ct.Day, 11, 00,00),
-            //        EndTime = new DateTime(ct.Year,ct.Month,ct.Day, 12, 30,00),
-
-            //    }},
-            //       {new Period
-            //    {
-            //            LunchTimeID = 7,
-            //        Sequence = 4,
-            //        StartTime = new DateTime(ct.Year,ct.Month,ct.Day, 13, 30,00),
-            //        EndTime = new DateTime(ct.Year,ct.Month,ct.Day,15, 30,00),
-
-            //    }},
-            //        {new Period
-            //    {
-            //             LunchTimeID = 7,
-            //        Sequence = 5,
-            //        StartTime = new DateTime(ct.Year,ct.Month,ct.Day, 15, 30,00),
-            //        EndTime = new DateTime(ct.Year,ct.Month,ct.Day, 16, 30,00),
-
-            //    }}
-            //};
-            //modelBuilder.Entity<Period>().HasData(periodList);
         }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {

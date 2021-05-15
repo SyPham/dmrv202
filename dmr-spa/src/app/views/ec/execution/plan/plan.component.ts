@@ -16,7 +16,6 @@ import { BuildingService } from 'src/app/_core/_service/building.service';
 import { IRole } from 'src/app/_core/_model/role';
 import { IBuilding } from 'src/app/_core/_model/building';
 import { FilteringEventArgs, highlightSearch, DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
-import { EmitType } from '@syncfusion/ej2-base';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/_core/_service/data.service';
 import { TodolistService } from 'src/app/_core/_service/todolist.service';
@@ -25,9 +24,11 @@ import { StationService } from 'src/app/_core/_service/station.service';
 import * as introJs from 'intro.js/intro.js';
 import { AuthService } from 'src/app/_core/_service/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Query } from '@syncfusion/ej2-data';
 import { ActionConstant, RoleConstant } from 'src/app/_core/_constants';
 import { ActivatedRoute } from '@angular/router';
+import { EmitType } from '@syncfusion/ej2-base';
+import { Query } from '@syncfusion/ej2-data';
+
 declare var $;
 @Component({
   selector: 'app-plan',
@@ -256,7 +257,7 @@ export class PlanComponent extends BaseComponent implements OnInit, OnDestroy {
     query =
       e.text !== '' ? query.where('name', 'contains', e.text, true) : query;
     // pass the filter data source, filter query to updateData method.
-    e.updateData(this.buildings as any, query);
+    e.updateData(this.buildings as any, query as any);
   }
   onChangeBuilding(args) {
     console.clear();
@@ -996,7 +997,7 @@ export class PlanComponent extends BaseComponent implements OnInit, OnDestroy {
     query =
       e.text !== '' ? query.where('name', 'contains', e.text, true) : query;
     // pass the filter data source, filter query to updateData method.
-    e.updateData(this.BPFCs as any, query);
+    e.updateData(this.BPFCs as any, query as any);
   }
   onChangeBPFCModal(args) {
     this.changebpfcID = args.itemData.id;

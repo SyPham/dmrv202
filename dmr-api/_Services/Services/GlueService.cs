@@ -102,7 +102,7 @@ namespace DMR_API._Services.Services
                     var nameList = new List<int>();
                     foreach (var item in _repoGlue.FindAll().Include(x => x.GlueName).Where(x => x.isShow == true && x.BPFCEstablishID == model.BPFCEstablishID))
                     {
-                        if (item.Name.ToInt() > 0)
+                        if (item.Name.ToInt() > 0 && item.Name.ToInt() < 10)
                         {
                             nameList.Add(item.Name.ToInt());
                         }
@@ -112,7 +112,7 @@ namespace DMR_API._Services.Services
                         var name = nameList.OrderByDescending(x => x).FirstOrDefault();
                         var nameTemp = name + "";
                         var glueNameModalTemp = _repoGlueName.FindAll(x => x.Name == nameTemp).FirstOrDefault();
-                        if (glueNameModal is null)
+                        if (glueNameModalTemp is null)
                         {
                             var glueNameItem = new GlueName { Name = model.Name };
                             _repoGlueName.Add(glueNameItem);
@@ -120,17 +120,12 @@ namespace DMR_API._Services.Services
 
                             glue.GlueNameID = glueNameItem.ID;
                             glue.Name = (name + 1).ToString();
-                            _repoGlue.Save();
 
                         }
                         else
                         {
-                            glue.Name = model.Name;
                             glue.GlueNameID = glueNameModal.ID;
-                            glue.Name = glueNameModalTemp.Name;
-                            glue.isShow = true;
-                            _repoGlue.Add(glue);
-                            _repoGlue.Save();
+                            glue.Name = (glueNameModalTemp.Name.ToInt() + 1) + "";
                         }
                     }
 
@@ -140,7 +135,7 @@ namespace DMR_API._Services.Services
                     transaction.Complete();
                     return true;
                 }
-                catch 
+                catch (Exception ex)
                 {
                     transaction.Dispose();
                     return false;

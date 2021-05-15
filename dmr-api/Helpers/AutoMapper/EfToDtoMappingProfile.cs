@@ -116,6 +116,7 @@ namespace DMR_API.Helpers.AutoMapper
             .ForMember(d => d.ExpiredTime, o => o.MapFrom(x => x.ExpriedTime()))
              .ForMember(d => d.RealTotal, o => o.MapFrom(real => real.MixingInfoDetails.Sum(x => x.Amount)));
 
+          
             CreateMap<MixingInfoForCreateDto, MixingInfo>();
             CreateMap<DispatchList, DispatchListDto>();
 
@@ -147,7 +148,13 @@ namespace DMR_API.Helpers.AutoMapper
            .ForMember(d => d.Ingredient, o => o.Ignore());
             CreateMap<Mailing, MailingDto>();
 
+            CreateMap<Addition, AdditionDto>()
+            .ForMember(d => d.BPFCEstablishName, o => o.MapFrom(x => $"{x.BPFCEstablish.ModelName.Name} - {x.BPFCEstablish.ModelNo.Name} - {x.BPFCEstablish.ArticleNo.Name} - {x.BPFCEstablish.ArtProcess.Process.Name}"))
+            .ForMember(d => d.ChemicalName, o => o.MapFrom(s => s.Ingredient.Name))
+            .ForMember(d => d.CreatedTime, o => o.MapFrom(s => s.CreatedTime.ToRemoveTicks()))
+            .ForMember(d => d.LineName, o => o.MapFrom(s => s.Building.Name));
         }
+     
 
     }
 }

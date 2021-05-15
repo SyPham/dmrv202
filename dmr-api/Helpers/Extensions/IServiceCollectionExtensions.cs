@@ -109,6 +109,7 @@ namespace DMR_API.Helpers.Extensions
             services.AddScoped<IModuleRepository, ModuleRepository>();
             services.AddScoped<IVersionRepository, VersionRepository>();
             services.AddScoped<IStirRawDataRepository, StirRawDataRepository>();
+            services.AddScoped<IAdditionRepository, AdditionRepository>();
             return services;
         }
 
@@ -169,6 +170,7 @@ namespace DMR_API.Helpers.Extensions
 
             //Không bao giờ inject Scoped & Transient service vào Singleton service
             //Không bao giờ inject Transient Service vào Scope Service
+            services.AddScoped<IAdditionService, AdditionService>();
 
             return services;
         }

@@ -93,7 +93,7 @@ export class PrintGlueDispatchListComponent implements OnInit, OnDestroy {
         const mixing = {
           glueName: this.value.glueName,
           glueID: this.value.glueID,
-          buildingID: this.building.id,
+          buildingID: +localStorage.getItem("buildingID"),
           mixBy: JSON.parse(localStorage.getItem('user')).user.id || 0,
           estimatedStartTime: this.value.estimatedStartTime,
           estimatedFinishTime: this.value.estimatedFinishTime,
@@ -333,7 +333,7 @@ export class PrintGlueDispatchListComponent implements OnInit, OnDestroy {
     query =
       e.text !== '' ? query.where('name', 'contains', e.text, true) : query;
     // pass the filter data source, filter query to updateData method.
-    e.updateData(this.glues as any, query);
+    e.updateData(this.glues as any, query as any);
   }
 
   // introjs

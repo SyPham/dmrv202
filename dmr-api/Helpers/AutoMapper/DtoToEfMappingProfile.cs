@@ -80,7 +80,7 @@ namespace DMR_API.Helpers.AutoMapper
 
             CreateMap<MailingDto, Mailing>();
 
-
+            CreateMap<AdditionDto, Addition>();
             //CreateMap<AuditTypeDto, MES_Audit_Type_M>();
         }
     }

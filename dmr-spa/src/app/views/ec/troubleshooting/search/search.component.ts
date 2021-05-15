@@ -61,7 +61,7 @@ export class SearchComponent implements OnInit {
     query =
       e.text !== '' ? query.where('name', 'contains', e.text, true) : query;
     // pass the filter data source, filter query to updateData method.
-    e.updateData(this.IngredientData, query);
+    e.updateData(this.IngredientData, query as any);
   }
 
   onChangeIngredientName(args) {

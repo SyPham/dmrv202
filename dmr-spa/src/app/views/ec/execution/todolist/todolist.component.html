@@ -23,6 +23,17 @@
               </button>
             </ng-template>
           </e-item>
+          <e-item prefixIcon='fa fa-plus-square-o' tooltipText="{{'Addition2' | translate}}">
+            <ng-template #template>
+              <button type="button" (click)='openAddition2()'
+                class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib">
+                <i class="e-btn-icon e-icons e-icon-left fas fa-plus-square"></i>
+                <span class="e-tbar-btn-text">
+                  {{'Addition2' | translate}}
+                </span>
+              </button>
+            </ng-template>
+          </e-item>
           <e-item id='excelExport' prefixIcon='fa fa-file-excel-o' text="{{'Report' | translate}}"></e-item>
           <e-item id='excelExport2' prefixIcon='fa fa-file-excel-o' text="{{'Report' | translate}} 2"></e-item>
           <e-item type='Separator'></e-item>
@@ -80,6 +91,7 @@
             text=" {{ 'Delay' | translate }} ({{delayDispatchTotal}})"></e-item>
           <e-item type='Separator'></e-item>
           <e-item id='done' prefixIcon='fa fa-check' text=" {{ 'Done' | translate }} ({{doneTotal}})"></e-item>
+          <e-item id='bondingGap' prefixIcon='fa fa-plus-square' text=" {{ 'Addition2' | translate }} "></e-item>
           <e-item align='right'>
             <ng-template #template>
               <div class="e-toolbar-item e-search-wrapper e-toolbar-right" aria-disabled="false" title="Search">
@@ -610,9 +622,42 @@
       </ejs-grid>
 
     </div>
+    <!-- End Done -->
     
+    <!-- Bonding Gap -->
+    <div class="card-body p-0" *ngIf="isShowTab == BONDING_GAP" >
+      <ejs-grid #gridBondingGap  gridLines='Both'
+      [dataSource]='bondingGapData'
+      allowPaging='true' showColumnMenu='true' [allowSorting]='true' allowResizing='true'
+      [allowExcelExport]='true' allowFiltering='true' [filterSettings]='filterSettings'
+      [pageSettings]='pageSettings'>
+      <e-columns>
+          <e-column field='#' headerText='#' width='70' textAlign='Center' isPrimaryKey='true'>
+              <ng-template #template let-data>
+                  {{NO(data.index)}}
+              </ng-template>
+          </e-column>
+          <e-column field='workerID' headerText="{{'Worker ID' | translate}}" width='150' textAlign='Center'>
+          </e-column>
+          <e-column field='chemicalName' headerText="{{'Chemical Name' | translate}}" width='150' textAlign='Center'>
+          </e-column>
+          <e-column field='amount' headerText="{{'Amount' | translate}}" editType='numericedit' width='150' textAlign='Center'>
+          </e-column>
+          <e-column field='lineName' headerText="{{'Line' | translate}}" width='150' textAlign='Center'>
+          </e-column>
+
+          <e-column field='bpfcEstablishName' headerText="{{'BPFC Name' | translate}}" width='350' textAlign='Center'>
+          </e-column>
+          <e-column field='remark' headerText="{{'Remark' | translate}}" width='200' textAlign='Center'>
+          </e-column>
+          <e-column field='createdTime' type='date'  headerText="{{'Created Time' | translate}}" format='MM-dd-yyyy HH:mm:ss' width='170' textAlign='Center'>
+          </e-column>
+      </e-columns>
+  </ejs-grid>
+    </div>
+    <!-- End Bonding Gap -->
+
   </div>
-  <!-- End Done -->
 
   <!-- Thêm bởi Quỳnh (Leo 1/28/2021 11:46) -->
   <ng-template #addition let-modal>

@@ -1,3 +1,5 @@
+import { AdditionService } from 'src/app/_core/_service/addition.service';
+import { AdditionComponent } from './../addition/addition.component';
 import { SubpackageComponent } from '../subpackage/subpackage.component';
 import { DispatchEVAUVComponent } from '../dispatchEVAUV/dispatchEVAUV.component';
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
@@ -46,6 +48,7 @@ const DISPATCHER = 6;
   providers: [DatePipe]
 })
 export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
+  filterSettings = { type: 'Excel' };
   // Start Thêm bởi Quỳnh (Leo 1/28/2021 11:46)
   Glue: any = [];
   dataAddition: any = [];
@@ -82,6 +85,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('gridAdditionDispatch') gridAdditionDispatch: GridComponent;
   @ViewChildren('tooltip') tooltip: QueryList<any>;
 
+  @ViewChild('gridBondingGap') gridBondingGap: GridComponent;
   @ViewChild('gridTodo') gridTodo: GridComponent;
   @ViewChild('gridDelay') gridDelay: GridComponent;
   @ViewChild('gridDispatch') gridDispatch: GridComponent;
@@ -130,7 +134,8 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
   DISPATCH = 'dispatch';
   DISPATCH_DELAY = 'dispatchDelay';
   EVA_UV = 'EVA_UV';
-  tabs = [this.TODO, this.DONE, this.DELAY, this.DISPATCH, this.DISPATCH_DELAY, this.EVA_UV];
+  BONDING_GAP = 'bondingGap';
+  tabs = [this.TODO, this.DONE, this.DELAY, this.DISPATCH, this.DISPATCH_DELAY, this.EVA_UV, this.BONDING_GAP];
   dispatchData: any;
   // tslint:disable-next-line:variable-name
   current_Date_Time = this.datePipe.transform(new Date(), 'HH:mm');
@@ -141,6 +146,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
   }[];
   glueNameIDDispatch: any;
   isSTF: boolean;
+  bondingGapData: any = [];
   @HostListener('fullscreenchange', ['$event']) fullscreenchange(e) {
     // if (document.fullscreenElement) {
     //   this.fullscreenBtn.iconCss = 'fas fa-compress-arrows-alt';
@@ -160,6 +166,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
+    private additionService: AdditionService,
     private authService: AuthService,
     private authenticationService: AuthenticationService,
     private spinner: NgxSpinnerService,
@@ -308,7 +315,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
     query =
       e.text !== '' ? query.where('name', 'contains', e.text, true) : query;
     // pass the filter data source, filter query to updateData method.
-    e.updateData(this.buildings as any, query);
+    e.updateData(this.buildings as any, query as any);
   }
   onChangeBuilding(args) {
     this.buildingID = args.itemData.id;
@@ -588,6 +595,11 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
       this.percentageOfDoneDispatch = res.percentageOfDoneDispatch;
     });
   }
+  bondingGap() {
+    this.additionService.getAllByBuildingID(this.buildingID).subscribe( data => {
+      this.bondingGapData = data;
+    });
+  }
   done() {
     this.todolistService.done(this.buildingID).subscribe(res => {
       this.doneData = res.data;
@@ -688,6 +700,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
     const dispatchButton: HTMLElement = (this.toolbarTodo.element as HTMLElement).querySelector('#dispatch');
     const doneButton: HTMLElement = (this.toolbarTodo.element as HTMLElement).querySelector('#done');
     const EVAUVButton: HTMLElement = (this.toolbarTodo.element as HTMLElement).querySelector('#eva_uv');
+    const bondingGapButton: HTMLElement = (this.toolbarTodo.element as HTMLElement).querySelector('#bondingGap');
     switch (this.isShowTab) {
       case this.TODO:
         todoButton?.classList.add('todo');
@@ -696,6 +709,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         delayDispatchButton?.classList.remove('todo');
         dispatchButton?.classList.remove('todo');
         doneButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
         EVAUVButton?.classList.remove('todo');
         break;
       case this.DELAY:
@@ -706,6 +720,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         doneButton?.classList.remove('todo');
         dispatchButton?.classList.remove('todo');
         EVAUVButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
         break;
       case this.DISPATCH:
         dispatchButton?.classList.add('todo');
@@ -714,6 +729,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         delayButton?.classList.remove('todo');
         doneButton?.classList.remove('todo');
         delayDispatchButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
         EVAUVButton?.classList.remove('todo');
         break;
       case this.DISPATCH_DELAY:
@@ -723,7 +739,9 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         delayButton?.classList.remove('todo');
         doneButton?.classList.remove('todo');
         dispatchButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
         EVAUVButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
         break;
       case this.DONE:
         doneButton?.classList.add('todo');
@@ -733,6 +751,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         dispatchButton?.classList.remove('todo');
         delayDispatchButton?.classList.remove('todo');
         EVAUVButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
         break;
       case this.EVA_UV:
         EVAUVButton?.classList.add('todo');
@@ -742,6 +761,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         dispatchButton?.classList.remove('todo');
         delayDispatchButton?.classList.remove('todo');
         doneButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
         break;
     }
     if (todoButton !== null) {
@@ -753,6 +773,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         doneButton?.classList.remove('todo');
         dispatchButton?.classList.remove('todo');
         EVAUVButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
       };
     }
     if (delayButton !== null) {
@@ -764,6 +785,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         doneButton?.classList.remove('todo');
         dispatchButton?.classList.remove('todo');
         EVAUVButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
       };
     }
     if (dispatchButton !== null) {
@@ -774,6 +796,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         doneButton?.classList.remove('todo');
         delayDispatchButton?.classList.remove('todo');
         EVAUVButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
       };
     }
     if (delayDispatchButton !== null) {
@@ -785,6 +808,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         doneButton?.classList.remove('todo');
         dispatchButton?.classList.remove('todo');
         EVAUVButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
       };
     }
     if (doneButton !== null) {
@@ -796,6 +820,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         dispatchButton?.classList.remove('todo');
         delayDispatchButton?.classList.remove('todo');
         EVAUVButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
       };
     }
     if (EVAUVButton !== null) {
@@ -807,8 +832,20 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
         delayDispatchButton?.classList.remove('todo');
         doneButton?.classList.remove('todo');
         dispatchButton?.classList.remove('todo');
+        bondingGapButton?.classList.remove('todo');
       };
     }
+    if (bondingGapButton !== null) {
+      bondingGapButton.onclick = (): void => {
+      bondingGapButton?.classList.add('todo');
+
+      todoButton?.classList.remove('todo');
+      delayButton?.classList.remove('todo');
+      delayDispatchButton?.classList.remove('todo');
+      doneButton?.classList.remove('todo');
+      dispatchButton?.classList.remove('todo');
+    };
+  }
   }
   searchDone(args) {
     if (this.focusDone === this.DONE) {
@@ -871,6 +908,11 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
       case 'addition':
         this.openAddition();
         break;
+        case 'bondingGap':
+          this.bondingGap();
+          this.isShowTab = this.BONDING_GAP;
+          this.focusDone = this.BONDING_GAP;
+          break;
       case 'done':
         this.isShowTab = this.DONE;
         this.focusDone = this.DONE;
@@ -1250,6 +1292,9 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
   openAddition() {
     this.modalReference = this.modalService.open(this.addition, { size: 'lg', backdrop: 'static', keyboard: false });
   }
+  openAddition2() {
+    this.modalReference = this.modalService.open(AdditionComponent, { size: 'xxl', backdrop: 'static', keyboard: false });
+  }
   openAdditionDispatch() {
     this.modalReference = this.modalService.open(this.additionDispatch, { size: 'lg', backdrop: 'static', keyboard: false });
   }
@@ -1352,4 +1397,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   // End STF
+  NO(index) {
+    return (this.gridBondingGap.pageSettings.currentPage - 1) * this.pageSettings.pageSize + Number(index) + 1;
+  }
 }

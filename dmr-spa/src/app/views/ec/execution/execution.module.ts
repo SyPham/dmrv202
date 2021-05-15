@@ -1,3 +1,4 @@
+import { AdditionComponent } from './addition/addition.component';
 import { CoreDirectivesModule } from './../../../_core/_directive/core.directives.module';
 // Angular
 import { CommonModule } from '@angular/common';
@@ -7,7 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 // Components Routing
 import { NgSelectModule } from '@ng-select/ng-select';
 
-import { DropDownListModule, MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
+import { MultiSelectAllModule, DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Import ngx-barcode module
 import { BarcodeGeneratorAllModule, DataMatrixGeneratorAllModule } from '@syncfusion/ej2-angular-barcode-generator';
@@ -92,7 +93,6 @@ if (lang === 'vi') {
     ReactiveFormsModule,
     NgxSpinnerModule,
     NgSelectModule,
-    DropDownListModule,
     NgbModule,
     ChartAllModule,
     AccumulationChartAllModule,
@@ -113,7 +113,8 @@ if (lang === 'vi') {
     CountdownModule,
     ToolbarModule,
     CheckBoxModule,
-    MultiSelectModule,
+    MultiSelectAllModule,
+    DropDownListAllModule,
     CoreDirectivesModule,
     FocusDirectivesModule,
     TranslateModule.forChild({
@@ -133,6 +134,7 @@ if (lang === 'vi') {
     PrintGlueComponent,
     SubpackageComponent,
     DispatchEVAUVComponent,
+    AdditionComponent,
     IncomingComponent,
     DispatchDoneListComponent,
     AutoSelectDirective,

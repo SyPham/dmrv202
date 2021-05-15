@@ -148,7 +148,7 @@ namespace DMR_API._Services.Services
                              TimeSend = b.TimeSend,
                              Frequency = b.Frequency
                          };
-            var groupBy = result.ToList().GroupBy(x => x.Frequency);
+            var groupBy = result.ToList().GroupBy(x => new { x.Frequency, x.Report });
             var list = new List<MailingDto>();
             foreach (var item in groupBy)
             {
@@ -158,8 +158,8 @@ namespace DMR_API._Services.Services
                     UserIDList = item.Select(x => x.UserID).ToList(),
                     UserList = item.Select(x => new UserList { MailingID = x.ID, ID = x.UserID, Email = x.Email}).ToList(),
                     TimeSend = item.First().TimeSend,
-                    Frequency = item.Key,
-                    Report = item.First().Report,
+                    Frequency = item.Key.Frequency,
+                    Report = item.Key.Report,
                     Email = item.First().Email,
                 });
             }
