@@ -74,10 +74,6 @@
     </div>
     <!-- Glue -->
     <div class="card">
-      <div *ngIf="existGlue">
-        <ejs-barcodegenerator *ngIf="showBarCode" style="display: block;" #barcode id="barcode" width="300px"
-          height="100px" mode="SVG" type="Code32" [value]="glue.code"></ejs-barcodegenerator>
-      </div>
       <div class="card-body table-responsive p-0">
         <div class="control-section" *ngIf="existGlue">
           <ejs-grid #gridglue [dataSource]='glues' height='250px' [editSettings]='editSettings' [toolbar]='toolbar'

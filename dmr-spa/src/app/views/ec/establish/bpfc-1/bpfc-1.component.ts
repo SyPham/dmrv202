@@ -118,7 +118,7 @@ export class Bpfc1Component implements OnInit, AfterViewInit {
   percentageChange: any;
   allowChange: any;
   public toolbarOptions = ['Search', 'Delete'];
-  public toolbarOptions2 = ['Search', 'Add', 'Delete', 'Cancel'];
+  public toolbarOptions2 = ['Search'];
   public toolbarOptionsHistory = ['Search'];
   public selectionOptions = { type: 'Multiple', mode: 'Both' };
   public editSettings: object;
