@@ -27,7 +27,7 @@
           <div *ngFor="let item of data">
 
             <div class="callout callout-info">
-              <h1>{{item.name}} ({{item.upatedTime | date: 'YYYY-MM-dd HH:mm'}})</h1>
+              <h1>{{item.name}} ({{item.createdTime | date: 'YYYY-MM-dd HH:mm'}})</h1>
               <div [innerHTML]="item.description"></div>
               <p><label for="Name">Upload by:</label> {{item.uploadBy}}</p>
             </div>

@@ -73,9 +73,9 @@ export class VersionComponent implements OnInit {
   }
   // grid event
   toolbarClick(args): void {
-    switch (args.item.text) {
+    switch (args.item.id) {
       /* tslint:disable */
-      case 'Add':
+      case 'grid_add':
         this.router.navigate(['/ec/system/version/add']);
         break;
       /* tslint:enable */
