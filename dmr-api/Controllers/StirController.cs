@@ -46,7 +46,7 @@ namespace DMR_API.Controllers
         [HttpGet("{mixingInfoID}/{start}/{end}")]
         public IActionResult GetRawData(int mixingInfoID, string start, string end)
         {
-            return Ok( _mixingInfoService.GetRawData(mixingInfoID, start, end));
+            return Ok(_mixingInfoService.GetRawData(mixingInfoID, start, end));
         }
         [HttpGet("{machineCode}/{start}/{end}")]
         public async Task<IActionResult> GetRPMByMachineCode(string machineCode, string start, string end)

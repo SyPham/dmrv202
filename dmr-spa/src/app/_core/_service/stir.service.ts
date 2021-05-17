@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Tutorial } from '../_model/tutorial';
 import { IStir, IStirForAdd, IStirForUpdate } from '../_model/stir';
 const httpOptions = {
   headers: new HttpHeaders({

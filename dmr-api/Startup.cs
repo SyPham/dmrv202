@@ -36,6 +36,8 @@ using System.Collections.Specialized;
 using Microsoft.AspNetCore.CookiePolicy;
 using DMR_API.Helpers.Extensions;
 using dmr_api.Data;
+using StackExchange.Redis;
+using System.Net;
 
 namespace DMR_API
 {
@@ -56,8 +58,33 @@ namespace DMR_API
             services.AddDatabaseExention(Configuration)
                     .AddRepositoriesExention()
                     .AddServicesExention();
+            services.AddRedisCacheExtention();
+            services.AddSignalR().AddStackExchangeRedis(appsettings.RedisConnection, options =>
+            {
+                options.ConnectionFactory = async writer =>
+                {
+                    var config = new ConfigurationOptions
+                    {
+                        AbortOnConnectFail = false,
+                        ClientName = "DMR_APP",
+                        ChannelPrefix = "IoT",
+                    };
+                    config.EndPoints.Add(IPAddress.Loopback, 0);
+                    config.SetDefaultPorts();
+                    var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+                    connection.ConnectionFailed += (_, e) =>
+                    {
+                        Console.WriteLine("Connection to Redis failed.");
+                    };
+                  
+                    if (!connection.IsConnected)
+                    {
+                        Console.WriteLine("Did not connect to Redis.");
+                    }
 
-            services.AddSignalR();
+                    return connection;
+                };
+            });
 
             services.AddLogging();
           

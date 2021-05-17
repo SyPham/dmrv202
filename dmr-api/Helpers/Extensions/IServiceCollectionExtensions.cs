@@ -298,5 +298,14 @@ namespace DMR_API.Helpers.Extensions
             services.AddSingleton(AutoMapperConfig.RegisterMappings());
             return services;
         }
+        public static IServiceCollection AddRedisCacheExtention(this IServiceCollection services)
+        {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "localhost";
+                options.InstanceName = "IoT";
+            });
+            return services;
+        }
     }
 }

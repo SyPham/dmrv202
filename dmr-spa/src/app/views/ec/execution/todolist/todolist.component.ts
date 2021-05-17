@@ -912,6 +912,9 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
           this.bondingGap();
           this.isShowTab = this.BONDING_GAP;
           this.focusDone = this.BONDING_GAP;
+          this.router.navigate([
+            `/ec/execution/todolist-2/${this.BONDING_GAP}`,
+          ]);
           break;
       case 'done':
         this.isShowTab = this.DONE;
