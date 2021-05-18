@@ -36,6 +36,13 @@ export class BasicAuthInterceptor implements HttpInterceptor {
                             The system does not work due to network error. Please press F5 to try again or contact IT department!
                             `);
                             return throwError(errorMessage);
+                          case 401:
+                            alert(`
+                            Phiên làm việc của bạn đã hết hạn! Vui lòng đăng nhập lại để tiếp tục làm việc.
+                            The token invalid! Please login again!
+                            `);
+                            this.authSerive.logOutAuth();
+                            return throwError(error.error || errorMessage);
                           case 400:
                             this.alertify.error(error.error || errorMessage);
                             return throwError(error.error);

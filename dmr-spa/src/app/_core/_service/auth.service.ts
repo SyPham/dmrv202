@@ -78,6 +78,18 @@ export class AuthService {
     // const uri = this.router.url;
     this.router.navigate(['login']);
   }
+  logOutAuth() {
+    this.cookieService.deleteAll();
+    localStorage.clear();
+    this.decodedToken = null;
+    this.currentUser = null;
+    this.buildingValue = null;
+    this.roleValue = null;
+    // this.alertify.message('Logged out');
+    // const uri = this.router.url;
+    this.router.navigate(['login']);
+    location.reload();
+  }
   roleMatch(allowedRoles): boolean {
     let isMatch = false;
     const userRoles = this.decodedToken.role as Array<string>;
