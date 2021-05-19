@@ -12,7 +12,6 @@ namespace DMR_API.Models
             this.CreatedTime = DateTime.Now;
         }
         public int ID { get; set; }
-        public int MachineID { get; set; }
         public string GlueName { get; set; }
         public int? SettingID { get; set; }
         public Setting Setting { get; set; }

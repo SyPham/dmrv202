@@ -14,6 +14,7 @@ import { PlanService } from 'src/app/_core/_service/plan.service.js';
 import { SettingService } from 'src/app/_core/_service/setting.service.js';
 // import * as signalr from '../../../../assets/js/ec-client.js';
 // import * as signalr from '../../../../assets/js/weighing-scale-client.js';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 import { debounceTime } from 'rxjs/operators';
 import { IScanner } from 'src/app/_core/_model/IToDoList.js';
@@ -91,6 +92,7 @@ export class MixingComponent implements OnInit, OnDestroy {
     private abnormalService: AbnormalService,
     private mixingService: MixingService,
     private router: Router,
+    private spinner: NgxSpinnerService,
     private settingService: SettingService,
     public todolistService: TodolistService
   ) {
@@ -274,6 +276,7 @@ export class MixingComponent implements OnInit, OnDestroy {
     });
   }
   getGlueWithIngredientByGlueID() {
+    this.spinner.show();
     this.makeGlueService
       .getGlueWithIngredientByGlueID(this.glueID)
       .subscribe((res: any) => {
@@ -301,6 +304,9 @@ export class MixingComponent implements OnInit, OnDestroy {
         });
         this.glueName = res.name;
         this.getMixingDetail();
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
       });
   }
 
