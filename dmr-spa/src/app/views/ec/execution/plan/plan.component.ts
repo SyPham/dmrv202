@@ -99,7 +99,7 @@ export class PlanComponent extends BaseComponent implements OnInit, OnDestroy {
   public fieldsGlue: object = { text: 'name', value: 'name' };
   public fieldsLine: object = { text: 'name', value: 'name' };
   public fieldsBPFC: object = {
-    text: 'name', value: 'name', tooltip: 'name', itemCreated: (e: any) => {
+    text: 'name', value: 'id', tooltip: 'name', itemCreated: (e: any) => {
       highlightSearch(e.item, this.queryString, true, 'Contains');
     }
   };

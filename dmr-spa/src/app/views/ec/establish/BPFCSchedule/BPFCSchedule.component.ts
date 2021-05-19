@@ -459,7 +459,7 @@ export class BPFCScheduleComponent extends BaseComponent implements OnInit, OnDe
 
   dataBound(args) {
     console.log('databound', args);
-    let changedHeight = this.gridObj.element.getBoundingClientRect().height - parseInt(this.gridObj.height as string);
+    const changedHeight = this.gridObj.element.getBoundingClientRect().height - parseInt(this.gridObj.height as string);
     this.gridObj.height = parseInt(this.gridObj.height as string) - changedHeight;
     // (this.gridObj.columns[0] as any).isPrimaryKey = 'true';
     //  this.gridObj.autoFitColumns();

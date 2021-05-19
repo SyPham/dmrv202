@@ -67,7 +67,7 @@ export class AuthenticationService implements OnDestroy {
   public functionsValue = new BehaviorSubject<FunctionSystem>
     ({} as FunctionSystem);
   private storageEventListener(event: StorageEvent) {
-    if (localStorage.length == 0) {
+    if (localStorage.length === 0) {
       window.location.reload();
     }
     if (event.storageArea === localStorage) {

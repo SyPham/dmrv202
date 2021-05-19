@@ -76,7 +76,7 @@ export class AdditionComponent extends BaseComponent implements OnInit {
         return {
           id: x.id,
           name: x.name
-        }
+        };
       });
     });
   }
@@ -97,7 +97,7 @@ export class AdditionComponent extends BaseComponent implements OnInit {
         return {
           id: x.id,
           name: x.name
-        }
+        };
       });
     });
   }
