@@ -80,13 +80,24 @@ namespace DMR_API._Services.Services
 
         public async Task<List<StirDTO>> GetStirByMixingInfoID(int MixingInfoID)
         {
-            return await _repoStir.FindAll(x => x.MixingInfoID == MixingInfoID)
-                .Include(x => x.MixingInfo)
-                .ThenInclude(x => x.Glue)
-                .ThenInclude(x => x.GlueIngredients)
-                .ThenInclude(x => x.Ingredient)
-                .ThenInclude(x => x.GlueType)
-                .ProjectTo<StirDTO>(_configMapper).OrderBy(x => x.CreatedTime).ToListAsync();
+            try
+            {
+                var data = await _repoStir.FindAll(x => x.MixingInfoID == MixingInfoID)
+               .Include(x => x.MixingInfo)
+               .ThenInclude(x => x.Glue)
+               .ThenInclude(x => x.GlueIngredients)
+               .ThenInclude(x => x.Ingredient)
+               .ThenInclude(x => x.GlueType)
+               .ProjectTo<StirDTO>(_configMapper).OrderBy(x => x.CreatedTime).ToListAsync();
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+
+                return new List<StirDTO>();
+
+            }
         }
 
         public async Task<PagedList<StirDTO>> GetWithPaginations(PaginationParams param)

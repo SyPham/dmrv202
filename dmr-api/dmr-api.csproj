@@ -26,6 +26,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200806072844_version1.0.2.cs" />
     <Compile Remove="Migrations\20200806072844_version1.0.2.Designer.cs" />
+    <Compile Remove="Migrations\20210518144618_AddMachineIDToStirTbl.cs" />
+    <Compile Remove="Migrations\20210518144618_AddMachineIDToStirTbl.Designer.cs" />
+    <Compile Remove="Migrations\20210518145014_AddMachineIdToStirTbl.cs" />
+    <Compile Remove="Migrations\20210518145014_AddMachineIdToStirTbl.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="5.2.0" />
