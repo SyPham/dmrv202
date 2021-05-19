@@ -321,8 +321,7 @@ namespace DMR_API._Services.Services
                             item.FinishStiringTime = currentTime;
                             item.Status = true;
                             _repoStir.Update(item);
-                            //var stirList = await _repoStir.FindAll(x => x.MixingInfoID == model.MixingInfoID)
-                            //    .OrderBy(x => x.CreatedTime).ToListAsync();
+                            await _repoStir.SaveAll();
 
                             var todolist = await _repoTodolist.FindAll(x => x.MixingInfoID == model.MixingInfoID).ToListAsync();
                             todolist.ForEach(todo =>
@@ -330,7 +329,8 @@ namespace DMR_API._Services.Services
                                 todo.StartStirTime = item.StartTime;
                                 todo.FinishStirTime = item.FinishStiringTime;
                             });
-                            await _repoStir.SaveAll();
+                            _repoTodolist.UpdateRange(todolist);
+                            await _repoTodolist.SaveAll();
                         }
                         else // nguoc lai thi khuay them
                         {

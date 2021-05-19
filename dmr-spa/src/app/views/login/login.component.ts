@@ -1,8 +1,7 @@
 import { PermissionService } from 'src/app/_core/_service/permission.service';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '../../_core/_service/auth.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AlertifyService } from '../../_core/_service/alertify.service';
-import { Router, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { UserForLogin } from 'src/app/_core/_model/user';
 import { environment } from 'src/environments/environment';
@@ -11,15 +10,7 @@ import { IRole, IUserRole } from 'src/app/_core/_model/role';
 import { IBuilding } from 'src/app/_core/_model/building';
 import { AuthenticationService } from 'src/app/_core/_service/authentication.service';
 import { Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import { FunctionSystem } from 'src/app/_core/_model/application-user';
-const ADMIN = 1;
-const ADMIN_COSTING = 5;
-const SUPERVISOR = 2;
-const STAFF = 3;
-const WORKER = 4;
-const WORKER2 = 6;
-const DISPATCHER = 6;
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

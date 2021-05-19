@@ -33,12 +33,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-import { AutofocusDirective } from './focus.directive';
 import { TooltipModule } from '@syncfusion/ej2-angular-popups';
 import { DateTimePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SelectQrCodeDirective } from './select.qrcode.directive';
-import { DatePipe } from '@angular/common';
 import { GridAllModule } from '@syncfusion/ej2-angular-grids';
 import { L10n, loadCldr, setCulture } from '@syncfusion/ej2-base';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
@@ -48,7 +46,6 @@ import { CountdownModule } from 'ngx-countdown';
 import { TimePickerModule } from '@progress/kendo-angular-dateinputs';
 import { QRCodeModule } from 'angularx-qrcode';
 import { SelectTextDirective } from './select.text.directive';
-import { AuthGuard } from 'src/app/_core/_guards/auth.guard';
 
 declare var require: any;
 let defaultLang: string;

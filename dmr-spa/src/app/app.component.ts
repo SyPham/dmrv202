@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { L10n, loadCldr, setCulture, Ajax } from '@syncfusion/ej2-base';
+import { Component } from '@angular/core';
+import { loadCldr } from '@syncfusion/ej2-base';
 declare var require: any;
 loadCldr(
   require('cldr-data/supplemental/numberingSystems.json'),
