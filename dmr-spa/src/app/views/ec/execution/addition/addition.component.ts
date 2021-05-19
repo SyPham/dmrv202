@@ -170,8 +170,8 @@ export class AdditionComponent extends BaseComponent implements OnInit {
     this.grid.toolbarModule.getToolbar();
     if (args.requestType === 'add') {
       this.initModel();
-      let item = args.rowData;
-      item = Object.assign({}, this.addition);
+      // let item = args.rowData;
+      // item = Object.assign({}, this.addition);
     }
     if (args.requestType === 'beginEdit') {
       const item = args.rowData;
