@@ -1,7 +1,10 @@
 {
-    "/api/*": {
-        "target": "http://10.4.4.224:1002",
-        "secure": false,
-        "loglevel": "debug"
+    "/api": {
+      "target": "http://localhost:3000",
+      "secure": false,
+      "pathRewrite": {
+        "^/api": ""
+      },
+      "logLevel": "debug"
     }
-}
+  }

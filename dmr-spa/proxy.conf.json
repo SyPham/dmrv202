@@ -1,0 +1,32 @@
+ {
+  "/api/account": {
+    "target": "http://10.4.5.174:108",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/api/Users": {
+    "target": "http://10.4.5.174:108",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+    "/api": {
+      "target": "http://10.4.4.224:1282",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    },
+    "/scalingHub": {
+      "target": "http://localhost:5001",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    },
+    "/ec-hub": {
+      "target": "http://10.4.4.224:1282",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }

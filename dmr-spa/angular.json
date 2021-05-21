@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "WM": {
+    "dmr-spa": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -11,6 +11,10 @@
       "prefix": "app",
       "architect": {
         "build": {
+          "allowedCommonJsDependencies": [
+            "@syncfusion",
+            "@progress"
+          ],
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "D:\\henry\\a_2021\\b_deployment\\dmrv216-spa",
@@ -80,18 +84,20 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "WM:build"
+            "browserTarget": "dmr-spa:build",
+            "proxyConfig": "proxy.conf.json"
+            
           },
           "configurations": {
             "production": {
-              "browserTarget": "WM:build:production"
+              "browserTarget": "dmr-spa:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "WM:build"
+            "browserTarget": "dmr-spa:build"
           }
         },
         "test": {
@@ -128,18 +134,18 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "WM:serve"
+            "devServerTarget": "dmr-spa:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "WM:serve:production"
+              "devServerTarget": "dmr-spa:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "WM",
+  "defaultProject": "dmr-spa",
   "cli": {
     "analytics": false
   }
