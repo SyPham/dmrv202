@@ -57,6 +57,7 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { GridAllModule } from '@syncfusion/ej2-angular-grids';
 import { CoreModule } from './_core/core.module';
+import { AuthenticationService } from './_core/_service/authentication.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -125,6 +126,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProjectDetailResolver,
     RoleResolver,
     AuthService,
+    AuthenticationService,
     GlueResolver,
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true }
   ],

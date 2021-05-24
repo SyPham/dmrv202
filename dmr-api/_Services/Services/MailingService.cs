@@ -140,11 +140,12 @@ namespace DMR_API._Services.Services
                          join b in model on a.ID equals b.UserID
                          select new MailingDto
                          {
-                             ID = b.ID,
+                               ID = b.ID,
                              UserID = b.UserID,
                              UserName = a.Username,
                              Report = b.Report,
                              Email = b.Email,
+                             PathName = b.PathName,
                              TimeSend = b.TimeSend,
                              Frequency = b.Frequency
                          };
@@ -154,13 +155,14 @@ namespace DMR_API._Services.Services
             {
                 list.Add(new MailingDto
                 {
-                    UserNames = item.Select(x => x.UserName).ToList(),
+                UserNames = item.Select(x => x.UserName).ToList(),
                     UserIDList = item.Select(x => x.UserID).ToList(),
                     UserList = item.Select(x => new UserList { MailingID = x.ID, ID = x.UserID, Email = x.Email}).ToList(),
                     TimeSend = item.First().TimeSend,
                     Frequency = item.Key.Frequency,
                     Report = item.Key.Report,
                     Email = item.First().Email,
+                    PathName = item.First().PathName,
                 });
             }
 

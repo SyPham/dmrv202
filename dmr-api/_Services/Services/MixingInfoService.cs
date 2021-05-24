@@ -393,5 +393,82 @@ namespace DMR_API._Services.Services
         {
            return _repoMixingInfor.FindAll(x=> x.ID == ID).Include(x=>x.MixingInfoDetails).FirstOrDefault();
         }
+
+        public async Task<MixingInfo> AddMixingInfoAsync(MixingInfoForAddDto mixing)
+        {
+             using (var scope = new TransactionScopeAsync().Create())
+            {
+                try
+                {
+                    string token = _accessor.HttpContext.Request.Headers["Authorization"];
+                    var userID = JWTExtensions.GetDecodeTokenByProperty(token, "nameid").ToInt();
+                    var mixingInfo = new MixingInfo
+                    {
+                        GlueID = mixing.GlueID,
+                        GlueName = mixing.GlueName,
+                        BuildingID = mixing.BuildingID,
+                        MixBy = mixing.MixBy,
+                        EstimatedFinishTime = mixing.EstimatedFinishTime,
+                        EstimatedStartTime = mixing.EstimatedStartTime
+
+                    };
+                    var glue = await _repoGlue.FindAll(x => x.ID == mixing.GlueID)
+                        .Include(x => x.GlueIngredients)
+                        .ThenInclude(x => x.Ingredient).FirstOrDefaultAsync();
+                    var checmicalA = glue.GlueIngredients.FirstOrDefault().Ingredient.ExpiredTime;
+                    mixingInfo.CreatedTime = DateTime.Now;
+                    mixingInfo.ExpiredTime = DateTime.Now.AddHours(checmicalA);
+                    string code = CodeUtility.RandomString(8);
+                    while (true)
+                    {
+                        var checkExistingCode = await _repoMixingInfor.FindAll(x => x.Code == code).AnyAsync();
+                        if (checkExistingCode is true)
+                        {
+                            code = CodeUtility.RandomString(8);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    mixingInfo.Code = code;
+                    mixingInfo.GlueNameID = glue.GlueNameID.Value;
+                    _repoMixingInfor.Add(mixingInfo);
+                    await _repoMixingInfor.SaveAll();
+
+                    var details = _mapper.Map<List<MixingInfoDetail>>(mixing.Details.ToList());
+                    // Thêm bởi Quỳnh (Leo 2/2/2021 11:46)
+                    foreach (var item in details)
+                    {
+                        item.Time_Start = item.Time_Start.ToLocalTime();
+                        item.Amount = Math.Round(item.Amount, 2);
+                    }
+                    // End Thêm bởi Quỳnh (Leo 2/2/2021 11:46)
+                    details.ForEach(x => x.MixingInfoID = mixingInfo.ID);
+                    _repoMixingInfoDetail.AddRange(details);
+                    await _repoMixingInfoDetail.SaveAll();
+
+                    var todo = new ToDoListForUpdateDto()
+                    {
+                        GlueName = mixing.GlueName,
+                        StartTime = mixing.StartTime,
+                        FinishTime = mixing.EndTime,
+                        MixingInfoID = mixingInfo.ID,
+                        EstimatedFinishTime = mixing.EstimatedFinishTime,
+                        EstimatedStartTime = mixing.EstimatedStartTime,
+                        BuildingID = mixing.BuildingID,
+                        Amount = details.Sum(x => x.Amount)
+                    };
+                    _toDoListService.UpdateMixingTimeRange(todo);
+                    scope.Complete();
+                    return mixingInfo;
+                }
+                catch
+                {
+                    scope.Dispose();
+                    return null;
+                }
+            }
+        }
     }
 }

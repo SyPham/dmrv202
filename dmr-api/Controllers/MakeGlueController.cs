@@ -74,9 +74,9 @@ namespace DMR_API.Controllers
             return Ok(_mixingInfoService.Mixing(update));
         }
         [HttpPost("Add")]
-        public IActionResult Add(MixingInfoForAddDto update)
+        public async Task<IActionResult> Add(MixingInfoForAddDto update)
         {
-            var item = _mixingInfoService.AddMixingInfo(update);
+            var item = await _mixingInfoService.AddMixingInfoAsync(update);
            if (item != null) return Ok(item);
            return BadRequest("Fail!");
         }

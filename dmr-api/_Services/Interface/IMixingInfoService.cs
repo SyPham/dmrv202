@@ -12,6 +12,7 @@ namespace DMR_API._Services.Interface
         MixingInfo Mixing(MixingInfoForCreateDto mixing);
         MixingInfo GetByID(int ID);
         MixingInfo AddMixingInfo(MixingInfoForAddDto mixing);
+        Task<MixingInfo> AddMixingInfoAsync(MixingInfoForAddDto mixing);
         Task<List<MixingInfoDto>> GetMixingInfoByGlueName(string glueName, int buildingID);
         Task<object> Stir(string glueName);
         Task<object> GetRPM(int mixingInfoID, string building, string startTime, string endTime);

@@ -19,12 +19,12 @@ export class FooterComponent implements OnInit {
   constructor(public modalService: NgbModal,
               private authenticationService: AuthenticationService,
               private versionService: VersionService) {
-    // this.userName = JSON.parse(localStorage.getItem('user')).user.username;
-    // this.userID = +JSON.parse(localStorage.getItem('user')).user.id;
-    this.authenticationService.user$.subscribe( x => {
-      this.userName = x.username;
-      this.userID = x.id;
-    });
+    this.userName = JSON.parse(localStorage.getItem('user')).user.username;
+    this.userID = +JSON.parse(localStorage.getItem('user')).user.id;
+    // this.authenticationService.user$.subscribe( x => {
+    //   this.userName = x.username;
+    //   this.userID = x.id;
+    // });
   }
   ngOnInit(): void {
     this.versionService.getAllVersion().subscribe( (item: any) => {

@@ -5,7 +5,7 @@ import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signal
 export const CONNECTION_HUB = new HubConnectionBuilder()
     .withUrl(environment.hub)
     .withAutomaticReconnect([1000, 3000, 5000, 10000, 30000])
-    // .configureLogging(signalR.LogLevel.Information)
+    .configureLogging(signalR.LogLevel.Debug)
     .build();
 // Start the connection.
 start();

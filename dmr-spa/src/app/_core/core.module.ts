@@ -11,13 +11,13 @@ import { JwtInterceptor } from '@auth0/angular-jwt';
   declarations: [],
   imports: [CommonModule],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: appInitializer,
-      multi: true,
-      deps: [AuthenticationService],
-    },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: appInitializer,
+    //   multi: true,
+    //   deps: [AuthenticationService],
+    // },
+    // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedInterceptor,

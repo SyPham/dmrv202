@@ -32,22 +32,22 @@ export class BasicAuthInterceptor implements HttpInterceptor {
                     switch (error.status) {
                         case 0:
                             alert(`
-                            Hệ thống không hoạt động vì lỗi mạng. Vui lòng nhấn F5 để thử lại hoặc liên hệ phòng IT.
-                            The system does not work due to network error. Please press F5 to try again or contact IT department!
+                            Hệ thống bị gián đoạn ở phía máy chủ. Vui lòng nhấn F5 để thử lại.
+                            The system does not work due to network error. Please press F5 to try again!
                             `);
                             return throwError(errorMessage);
-                          case 401:
-                            alert(`
-                            Phiên làm việc của bạn đã hết hạn! Vui lòng đăng nhập lại để tiếp tục làm việc.
-                            The token invalid! Please login again!
-                            `);
-                            this.authSerive.logOutAuth();
-                            return throwError(error.error || errorMessage);
+                        //   case 401:
+                        //     alert(`
+                        //     Phiên làm việc của bạn đã hết hạn! Vui lòng đăng nhập lại để tiếp tục làm việc.
+                        //     The token invalid! Please login again!
+                        //     `);
+                        //     this.authSerive.logOutAuth();
+                        //     return throwError(error.error || errorMessage);
                           case 400:
                             this.alertify.error(error.error || errorMessage);
                             return throwError(error.error);
                           case 500:
-                            alert("Máy chủ đang gặp vấn đề. Vui lòng thử lại sau! The server error. Please try again after sometime!");
+                            alert("Máy chủ đang gặp vấn đề. Vui lòng nhấn F5 để thử lại! The server error. Please press F5 to try again!");
                             return throwError(error);
                     }
                 }

@@ -79,30 +79,30 @@ export class AuthenticationService implements OnDestroy {
       if (event.key === 'login-event') {
         this.stopTokenTimer();
       }
-      if (event.oldValue !== null && event.key === 'functions') {
-        if (JSON.stringify(event.oldValue) !== JSON.stringify(event.newValue)) {
-          this.logOut();
-          window.location.reload();
-        }
-      }
-      if (event.oldValue !== null && event.key === 'level') {
-        if (JSON.stringify(event.oldValue) !== JSON.stringify(event.newValue)) {
-          this.logOut();
-          window.location.reload();
-        }
-      }
-      if (event.key === 'user') {
-        if (event.oldValue !== null && JSON.stringify(event.oldValue) !== JSON.stringify(event.newValue)) {
-          this.logOut();
-          // window.location.reload();
-        }
-      }
-      if (event.key === 'menus') {
-        if (event.oldValue !== null && JSON.stringify(event.oldValue) !== JSON.stringify(event.newValue)) {
-          this.logOut();
-          // window.location.reload();
-        }
-      }
+      // if (event.oldValue !== null && event.key === 'functions') {
+      //   if (JSON.stringify(event.oldValue) !== JSON.stringify(event.newValue)) {
+      //     this.logOut();
+      //     window.location.reload();
+      //   }
+      // }
+      // if (event.oldValue !== null && event.key === 'level') {
+      //   if (JSON.stringify(event.oldValue) !== JSON.stringify(event.newValue)) {
+      //     this.logOut();
+      //     window.location.reload();
+      //   }
+      // }
+      // if (event.key === 'user') {
+      //   if (event.oldValue !== null && JSON.stringify(event.oldValue) !== JSON.stringify(event.newValue)) {
+      //     this.logOut();
+      //     // window.location.reload();
+      //   }
+      // }
+      // if (event.key === 'menus') {
+      //   if (event.oldValue !== null && JSON.stringify(event.oldValue) !== JSON.stringify(event.newValue)) {
+      //     this.logOut();
+      //     // window.location.reload();
+      //   }
+      // }
     }
   }
 
