@@ -25,9 +25,7 @@ namespace DMR_API.SignalrHub
         private readonly IMailExtension _emailService;
         private readonly IDistributedCache _distributedCache;
         string SEQUENCE = "sequence";
-        string BUILDING = "building";
         string CREATED_TIME = "createdtime";
-        string MACHINEID = "machineID";
         string REDIS_VALUE = "IoT";
         private readonly RedisManagerPool _redisClient;
         public ECHub(

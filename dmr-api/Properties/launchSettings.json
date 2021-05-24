@@ -26,7 +26,7 @@
       },
 
       // "applicationUrl": "http://10.4.4.92:1002"
-      "applicationUrl": "http://10.4.4.224:1282"
+      "applicationUrl": "http://10.4.4.224:6866"
       //"applicationUrl": "http://10.4.4.224:1002"
     },
     "Docker": {

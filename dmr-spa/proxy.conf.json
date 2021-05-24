@@ -12,7 +12,7 @@
     "logLevel": "debug"
   },
     "/api": {
-      "target": "http://10.4.4.224:1282",
+      "target": "http://10.4.4.224:6866",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"
@@ -24,7 +24,7 @@
       "logLevel": "debug"
     },
     "/ec-hub": {
-      "target": "http://10.4.4.224:1282",
+      "target": "http://10.4.4.224:6866",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"
