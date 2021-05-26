@@ -18,7 +18,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = environment.apiUrl;
+  baseUrl = environment.apiUrlEC;
   authUrl = environment.apiUrl;
   messageSource = new BehaviorSubject<number>(0);
   currentMessage = this.messageSource.asObservable();

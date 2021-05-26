@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { AccountService } from 'src/app/_core/_service/account.service';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { EditService, ToolbarService, PageService, PageSettingsModel, ToolbarItems, GridComponent, QueryCellInfoEventArgs } from '@syncfusion/ej2-angular-grids';
@@ -39,6 +39,8 @@ export class DecentralizationComponent implements OnInit {
   passwordFake = `aRlG8BBHDYjrood3UqjzRl3FubHFI99nEPCahGtZl9jvkexwlJ`;
   pageSettings = { pageCount: 20, pageSizes: true, pageSize: 10 };
   @ViewChild('grid') public grid: GridComponent;
+  @ViewChildren('multiSelectBuildings') public multiSelectBuildings: QueryList<MultiSelectComponent>;
+  @ViewChildren('multiSelectLines') public multiSelectLines: QueryList<MultiSelectComponent>;
   roles: IRole[];
   roleID: any;
   userCreate: IUserCreate;
@@ -51,6 +53,8 @@ export class DecentralizationComponent implements OnInit {
   lineRemovingList = [];
   buildingList = [];
   buildingRemovingList = [];
+  checkAll = [];
+  public selectAllText = '';
   constructor(
     private accountService: AccountService,
     public modalService: NgbModal,
@@ -59,6 +63,7 @@ export class DecentralizationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.selectAllText = 'Select All';
     this.mode = 'CheckBox';
     this.roleID = 0;
     this.buildingID = 0;
@@ -182,14 +187,22 @@ export class DecentralizationComponent implements OnInit {
       }
     });
   }
-  closeLine() {
+  closeLine(index) {
+    // const item = this.multiSelectLines.toArray()[+index];
+    // item.refresh();
     this.getAllUserInfo();
   }
-  closeBuilding() {
+  closeBuilding(index) {
     this.getAllUserInfo();
+    // const item = this.multiSelectBuildings.toArray()[+index];
+    // item.refresh();
+
   }
   // end api
   NO(index) {
     return (this.grid.pageSettings.currentPage - 1) * this.pageSettings.pageSize + Number(index) + 1;
+  }
+  selectedAll(args) {
+    console.log(args);
   }
 }

@@ -27,24 +27,26 @@
                 #
               </ng-template>
             </e-column>
-            <e-column field="username" isPrimaryKey="true" textAlign='Center' headerText="Username"> </e-column>
-            <e-column field="employeeID" isPrimaryKey="true" textAlign='Center' headerText="Account"> </e-column>
-            <e-column field="role" textAlign='Center' isPrimaryKey="true" headerText="Role">
+            <e-column field="username" isPrimaryKey="true" textAlign='Center' headerText="{{'Username' | translate}}"> </e-column>
+            <e-column field="employeeID" isPrimaryKey="true" textAlign='Center' headerText="{{'Account' | translate}}"> </e-column>
+            <e-column field="role" textAlign='Center' isPrimaryKey="true" headerText="{{'Role' | translate}}">
             </e-column>
-            <e-column field="building" textAlign='Center' headerText="Building">
+            <e-column field="building" textAlign='Center' headerText="{{'Building' | translate}}">
               <ng-template #template let-data>
-                 <ejs-multiselect [dataSource]='data.buildingsData' (close)='closeBuilding()'
+                 <ejs-multiselect #multiSelectBuildings [dataSource]='data.buildingsData' (close)='closeBuilding(data.index)'
                  (removing)='removingBuilding($event, data)' (select)="onSelectBuilding($event, data)" [(ngModel)]="data.buildings"
                   [mode]='mode' [fields]='fieldsBuilding' [showDropDownIcon]='true'  placeholder='Select building'>
                 </ejs-multiselect>
               </ng-template>
             </e-column>
-            <e-column field="line" textAlign='Center' headerText="Line">
+            <e-column field="line" textAlign='Center' headerText="{{'Line' | translate}}">
               <ng-template #template let-data>
-                <ejs-multiselect [dataSource]='data.linesData'  (close)='closeLine()'
+                <ejs-multiselect #multiSelectLines [dataSource]='data.linesData'  (close)='closeLine(data.index)'
                  (removing)='removing($event, data)' (select)="onSelect($event, data)" [(ngModel)]="data.lines"
-                  [mode]='mode' [fields]='fieldsLine' [showDropDownIcon]='true'  placeholder='Select line'>
+                  selectedAll="selectedAll($event)" [selectAllText]='selectAllText'
+                  [mode]='mode' [fields]='fieldsLine'  [showDropDownIcon]='true'  placeholder='Select line'>
                 </ejs-multiselect>
+
               </ng-template>
             </e-column>
           </e-columns>

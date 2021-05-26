@@ -43,6 +43,7 @@
               </ng-template>
             </e-column>
             <e-column field="email" textAlign='Center' headerText="Email"> </e-column>
+            
             <e-column field="role" textAlign='Center' headerText="Role Group">
               <ng-template #editTemplate let-data>
                 <ejs-dropdownlist #positionDropdownlist [dataSource]='roles' [value]="data.role"
@@ -62,10 +63,10 @@
                 <!-- <div class="btn-group ml-2" *ngIf="data.role === 'Dispatcher' && data.building !== '#N/A'">
                   <button type="button" (click)='showLineModal(lineModal, data)' class="btn btn-xs btn-primary"><i class="fa fa-eye"></i></button>
                 </div> -->
-                  <!-- <div class="btn-group ml-2" *ngIf="data.role === 'Worker'">
+                  <div class="btn-group ml-2" *ngIf="data.role === 'Staff'">
                     <button type="button" (click)='showBuildingModal(buildingModal, data)' class="btn btn-xs btn-primary"><i
                         class="fa fa-building"></i></button>
-                  </div> -->
+                  </div>
               </ng-template>
               <ng-template #editTemplate let-data>
                 <div class="btn-group">
