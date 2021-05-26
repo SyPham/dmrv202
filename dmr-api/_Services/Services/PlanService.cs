@@ -717,7 +717,7 @@ namespace DMR_API._Services.Services
         #endregion
 
         #region Action
-        public async Task<bool> Add(PlanDto model)
+          public async Task<bool> Add(PlanDto model)
         {
             var userID = _jwtService.GetUserID();
             using var transaction = new TransactionScopeAsync().Create();
@@ -802,7 +802,6 @@ namespace DMR_API._Services.Services
                             _repoToDoList.UpdateRange(todo);
                             await _repoToDoList.SaveAll();
                         }
-
 
                         // 11:00 >= 10:50 && 10:30 > 10:50
                         var deletingList = await _repoDispatchList.FindAll(x => x.EstimatedStartTime.TimeOfDay >= timeOfDay && x.EstimatedFinishTime.TimeOfDay > timeOfDay && x.PlanID == oldPlan.ID && x.IsDelete == false).ToListAsync();
@@ -3372,6 +3371,125 @@ namespace DMR_API._Services.Services
               .ToListAsync();
             return model;
         }
+
+        public async Task<ResponseDetail<byte[]>> AchievementRateExcelExport(string date)
+        {
+            // Muốn lấy báo cáo ngày 21 tháng 5 thì date sẽ là ngày 20 tháng 5
+            var today = date.ToDateTime().Date;
+            var tomorrow = today.AddDays(1).Date;
+            var buildings = await _repoBuilding.FindAll(x => x.Level == 2).ToListAsync();
+            var data = new List<AchievementDto>();
+
+            foreach (var item in buildings)
+            {
+                var lines = await _repoBuilding.FindAll(x => x.ParentID == item.ID).ToListAsync();
+                var linesID = lines.Select(x => x.ID);
+                var model = _repoPlan.FindAll(x => linesID.Contains(x.BuildingID)
+                 && x.DueDate.Date == tomorrow)
+                .Include(x => x.ToDoList)
+                .Include(x => x.DispatchList)
+                .DistinctBy(x => x.BuildingID)
+                .ToList();
+
+                var lineTotal = lines.Count();
+                var planTotal = model.Where(x => x.ToDoList.Count() > 0 || x.DispatchList.Count() > 0
+                                             && x.UpdatedTime.Value.Date == today
+                                             && x.CreatedDate.Date == today).Count();
+                var rateTemp = planTotal != 0 && lineTotal != 0 ? (planTotal / (double)lineTotal) * 100 : 0;
+                var rate = Math.Round(rateTemp);
+                data.Add(new AchievementDto
+                {
+                    Building = item.Name,
+                    UpdateOnTime = planTotal, // Update Before 18:00
+                    Total = lineTotal,
+                    AchievementRate = rate
+                });
+
+            }
+            var UpdateOnTimeTotal = data.Select(x => x.UpdateOnTime).Sum();
+            var planTotal2 = data.Select(x => x.Total).Sum();
+            var all = new AchievementDto
+            {
+                Building = "All",
+                UpdateOnTime = UpdateOnTimeTotal, // Update Before 18:00
+                Total = planTotal2,
+                AchievementRate = planTotal2 != 0 && UpdateOnTimeTotal != 0 ? Math.Round((UpdateOnTimeTotal / (double)planTotal2) * 100) : 0
+            };
+            data.Add(all);
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.Commercial;
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                var memoryStream = new MemoryStream();
+                using (ExcelPackage p = new ExcelPackage(memoryStream))
+                {
+                    // đặt tên người tạo file
+                    p.Workbook.Properties.Author = "Henry Pham";
+
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = "AchievementReport";
+                    //Tạo một sheet để làm việc trên đó
+                    p.Workbook.Worksheets.Add("AchievementReport");
+
+                    // lấy sheet vừa add ra để thao tác
+                    ExcelWorksheet ws = p.Workbook.Worksheets["AchievementReport"];
+
+                    // đặt tên cho sheet
+                    ws.Name = "AchievementReport";
+                    // fontsize mặc định cho cả sheet
+                    ws.Cells.Style.Font.Size = 11;
+                    // font family mặc định cho cả sheet
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    string[] headers = new string[] { "Building", "Update befor 18:00", "Total", "Achievement %" };
+                    int headerRowIndex = 1;
+                    int headerColIndex = 1;
+                    int patternTypeColIndex = 1;
+                    // int backgroundColorColIndex = 1;
+                    foreach (var item in headers.Select((value, index) => new { value, index }))
+                    {
+                        ws.Cells[headerRowIndex, headerColIndex++].Value = headers[item.index];
+
+                        // Style Header
+                        var pattern = ws.Cells[headerRowIndex, patternTypeColIndex++];
+                        pattern.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        pattern.Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#FFFF00"));
+                    }
+
+
+                    // end Style
+
+                    int colIndex = 1;
+                    int rowIndex = 1;
+                    // với mỗi item trong danh sách sẽ ghi trên 1 dòng
+                    foreach (var body in data)
+                    {
+                        // bắt đầu ghi từ cột 1. Excel bắt đầu từ 1 không phải từ 0 #c0514d
+                        colIndex = 1;
+
+                        // rowIndex tương ứng từng dòng dữ liệu
+                        rowIndex++;
+
+
+                        //gán giá trị cho từng cell                      
+                        ws.Cells[rowIndex, colIndex++].Value = body.Building;
+                        ws.Cells[rowIndex, colIndex++].Value = body.UpdateOnTime;
+                        ws.Cells[rowIndex, colIndex++].Value = body.Total;
+                        ws.Cells[rowIndex, colIndex++].Value = body.AchievementRate + " %";
+                    }
+
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    return new ResponseDetail<Byte[]>(bin, true, string.Empty);
+                }
+            }
+            catch (Exception ex)
+            {
+                var mes = ex.Message;
+                Console.Write(mes);
+                return new ResponseDetail<Byte[]>(new Byte[] { }, false, string.Empty);
+            }
+        }
+
         #endregion
 
     }

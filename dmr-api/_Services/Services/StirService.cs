@@ -273,7 +273,6 @@ namespace DMR_API._Services.Services
 
                     int temp = 0;
                     int standardDuration = item.StandardDuration == 0 ? (int)model.GlueType.Minutes * 60 : item.StandardDuration;
-                    //if (rawData.Count == 0) return false;
                     // Neu = 0 thì lấy dữ liệu giả
                     if (rawDataModel.Count == 0)
                     {
@@ -286,9 +285,12 @@ namespace DMR_API._Services.Services
                         item.Status = true;
                         _repoStir.Update(item);
                         await _repoStir.SaveAll();
+<<<<<<< HEAD
 
                         //var stirList = await _repoStir.FindAll(x => x.MixingInfoID == model.MixingInfoID)
                         //    .OrderBy(x => x.CreatedTime).ToListAsync();
+=======
+>>>>>>> 430444087de1c46b0c6a5acf7568204535641d3b
 
                         var todolist = await _repoTodolist.FindAll(x => x.MixingInfoID == model.MixingInfoID).ToListAsync();
                         todolist.ForEach(todo =>
@@ -301,11 +303,6 @@ namespace DMR_API._Services.Services
                     }
                     else
                     {
-                        //var sequence = rawDataModel.Sequence;
-                        //var rawData = await _repoStirStirRawData
-                        //.FindAll(x => x.Building == item.Setting.Building.Name && x.MachineID == machineID && x.Sequence == sequence)
-                        //.Select(x => new { x.RPM, x.CreatedTime, x.Sequence })
-                        //.OrderByDescending(x => x.CreatedTime).ToListAsync();
 
                         foreach (var raw in rawDataModel)
                         {
@@ -325,9 +322,12 @@ namespace DMR_API._Services.Services
                             item.Status = true;
                             _repoStir.Update(item);
                             await _repoStir.SaveAll();
+<<<<<<< HEAD
 
                             //var stirList = await _repoStir.FindAll(x => x.MixingInfoID == model.MixingInfoID)
                             //    .OrderBy(x => x.CreatedTime).ToListAsync();
+=======
+>>>>>>> 430444087de1c46b0c6a5acf7568204535641d3b
 
                             var todolist = await _repoTodolist.FindAll(x => x.MixingInfoID == model.MixingInfoID).ToListAsync();
                             todolist.ForEach(todo =>
@@ -371,112 +371,6 @@ namespace DMR_API._Services.Services
                     return null;
                 }
             }
-            //using var transaction = new TransactionScopeAsync().Create();
-            //{
-            //    try
-            //    {
-            //        var currentTime = DateTime.Now;
-            //        var item = await _repoStir.FindAll(x => x.ID == model.ID)
-            //            .Include(x => x.Setting)
-            //            .ThenInclude(x => x.Building)
-            //            .FirstOrDefaultAsync();
-
-            //        var machineID = item.Setting.MachineCode.ToInt();
-            //        var end = item.StartScanTime.AddMinutes(model.GlueType.Minutes);
-            //        var start = item.StartScanTime;
-
-            //        var rawDataModel = _repoStirStirRawData
-            //            .FindAll()
-            //            .Where(x => x.Building == item.Setting.Building.Name &&  x.MachineID == machineID && x.CreatedTime >= start && x.CreatedTime <= end)
-            //            .Select(x => new { x.RPM, x.CreatedTime, x.Sequence })
-            //            .OrderByDescending(x => x.CreatedTime).ToArray();
-
-
-            //        double temp = 0;
-            //        int standardDuration = item.StandardDuration == 0 ? (int)model.GlueType.Minutes * 60 : item.StandardDuration;
-            //        // Neu khong co du lieu tu IOT thi gan bang false
-            //        if (rawDataModel.Length == 0)
-            //        {
-            //            temp = (int)Math.Round((model.EndTime - model.StartTime).TotalMinutes, 0);
-            //            item.StandardDuration = standardDuration;
-            //            item.ActualDuration = temp.ToInt();
-            //            item.StartTime = DateTime.MinValue;
-            //            item.EndTime = DateTime.MinValue;
-            //            item.FinishStiringTime = model.EndTime;
-            //            item.Status = false;
-            //            _repoStir.Update(item);
-            //            await _repoStir.SaveAll();
-            //        }
-            //        else
-            //        {
-            //            var stdCon = model.GlueType.RPM;
-            //            var sequence = rawDataModel.DistinctBy(x=>x.Sequence).Select(x=>x.Sequence).ToList();
-            //            var rawData = rawDataModel
-            //               .Where(x => x.RPM >= stdCon && sequence.Contains(x.Sequence))
-            //               .Select(x => new { x.RPM, x.CreatedTime, x.Sequence })
-            //               .OrderByDescending(x => x.CreatedTime).ToList();
-
-            //            var RPM = rawData.Average(x => x.RPM);
-            //            var min = rawData.LastOrDefault().CreatedTime;
-            //            var max = rawData.FirstOrDefault().CreatedTime;
-            //             temp = (max - min).TotalSeconds;
-            //            // Neu khuay du thoi gian va du toc do thi pass
-            //            if (standardDuration <= temp)
-            //            {
-            //                item.StandardDuration = standardDuration;
-            //                item.ActualDuration = (int)Math.Round(temp);
-            //                item.StartTime = min;
-            //                item.EndTime = max;
-            //                item.FinishStiringTime = currentTime;
-            //                item.Status = true;
-            //                item.RPM = (int)Math.Round(RPM);
-            //                _repoStir.Update(item);
-            //                await _repoStir.SaveAll();
-
-            //                // Lay startTime cua luot dau va end time cua luot cuoi cung co trang thai la pass update vao todolist
-            //                var stirModel = await _repoStir.FindAll(a => a.MixingInfoID == item.MixingInfoID).OrderByDescending(x => x.CreatedTime).ToListAsync();
-            //                var startStirTime = stirModel.LastOrDefault().StartStiringTime;
-            //                var finishStirTime = stirModel.FirstOrDefault().FinishStiringTime;
-            //                // update TG pass vao todolist
-            //                var todolist = await _repoTodolist.FindAll(x => x.MixingInfoID == model.MixingInfoID).ToListAsync();
-            //                todolist.ForEach(todo =>
-            //                {
-            //                    todo.StartStirTime = startStirTime;
-            //                    todo.FinishStirTime = finishStirTime;
-            //                });
-            //                await _repoTodolist.SaveAll();
-            //            }
-            //            else // nguoc lai thi khuay them
-            //            {
-            //                item.StandardDuration = standardDuration;
-            //                item.ActualDuration = (int)Math.Round(temp);
-            //                item.RPM = (int)Math.Round(RPM);
-            //                item.Status = false;
-            //                _repoStir.Update(item);
-            //                await _repoStir.SaveAll();
-            //                var stir = new Stir()
-            //                {
-            //                    MixingInfoID = model.MixingInfoID,
-            //                    StandardDuration = standardDuration - (int)Math.Round(temp),
-            //                    Status = false,
-            //                    CreatedTime = DateTime.Now,
-            //                    GlueName = model.GlueName,
-            //                    SettingID = model.SettingID
-            //                };
-            //                _repoStir.Add(stir);
-            //                await _repoStir.SaveAll();
-            //            }
-            //        }
-
-            //        transaction.Complete();
-            //        return item;
-            //    }
-            //    catch
-            //    {
-            //        transaction.Dispose();
-            //        return null;
-            //    }
-            //}
         }
     }
 }

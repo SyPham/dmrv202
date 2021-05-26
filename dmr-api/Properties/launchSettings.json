@@ -26,7 +26,11 @@
       },
 
       // "applicationUrl": "http://10.4.4.92:1002"
+<<<<<<< HEAD
       "applicationUrl": "http://10.4.5.174:10"
+=======
+      "applicationUrl": "http://10.4.4.224:6866"
+>>>>>>> 430444087de1c46b0c6a5acf7568204535641d3b
       //"applicationUrl": "http://10.4.4.224:1002"
     },
     "Docker": {

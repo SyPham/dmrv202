@@ -79,6 +79,7 @@ namespace DMR_API._Services.Interface
         /// </summary>
         Task<ResponseDetail<object>> AchievementRate(int building);
         Task<ResponseDetail<Byte[]>> AchievementRateExcelExport();
+        Task<ResponseDetail<Byte[]>> AchievementRateExcelExport(string date);
 
     }
 }

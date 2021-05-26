@@ -311,6 +311,36 @@ namespace DMR_API.Controllers
 
             return File(res.Data, "application/octet-stream", "AchievementRateExcelExport.xlsx");
         }
+          [HttpGet("{date}")]
+        public async Task<IActionResult> AchievementRateExcelExport([FromQuery] List<string> emails, string date)
+        {
+            var res = await _planService.AchievementRateExcelExport(date);
+            var dateTime = date.ToDateTime().Date;
+            var subject = "Mixing Room Report";
+            var fileName = $"{dateTime.ToString("MMddyyyy")}_AchievementRateReport.xlsx";
+            var message = "Please refer to the Mixing Room Report";
+            var mailList = new List<string>
+            {
+                //"mel.kuo@shc.ssbshoes.com",
+                //"maithoa.tran@shc.ssbshoes.com",
+                //"andy.wu@shc.ssbshoes.com",
+                //"sin.chen@shc.ssbshoes.com",
+                //"leo.doan@shc.ssbshoes.com",
+                //"heidy.amos@shc.ssbshoes.com",
+                //"bonding.team@shc.ssbshoes.com",
+                //"Ian.Ho@shc.ssbshoes.com",
+                // "swook.lu@shc.ssbshoes.com",
+                //"damaris.li@shc.ssbshoes.com",
+                //"peter.tran@shc.ssbshoes.com"
+            };
+            if (res.Data != null || res.Data.Length > 0)
+            {
+                await _mailingService.SendEmailWithAttactExcelFileAsync(emails, subject, message, fileName, res.Data);
+            }
+
+            return File(res.Data, "application/octet-stream", "AchievementRateExcelExport.xlsx");
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Finish(int id)
         {
