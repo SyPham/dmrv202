@@ -226,7 +226,7 @@ namespace DMR_API._Services.Services
                 var data = doneList.Concat(dispatchListResult).Where(x => x.PrintTime != null && x.JobType == jobTypeOfTodo || x.FinishDispatchingTime != null && x.JobType == jobTypeOfDispatch).ToList();
                 var recaculatetotal = todoTotal + delayTotal + doneTotal + todoDispatchTotal + delayDispatchTotal + doneDispatchTotal;
                 response.TodoDetail(data, doneTotal + doneDispatchTotal, todoTotal, delayTotal, recaculatetotal);
-                response.DispatcherDetail(data, 0, doneTotal + todoDispatchTotal, delayDispatchTotal, dispatchTotal);
+                response.DispatcherDetail(data, doneTotal + doneDispatchTotal, todoTotal + todoDispatchTotal, delayDispatchTotal, dispatchTotal);
 
                 return response;
             }

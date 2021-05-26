@@ -286,6 +286,9 @@ namespace DMR_API._Services.Services
                         _repoStir.Update(item);
                         await _repoStir.SaveAll();
 
+                        //var stirList = await _repoStir.FindAll(x => x.MixingInfoID == model.MixingInfoID)
+                        //    .OrderBy(x => x.CreatedTime).ToListAsync();
+
                         var todolist = await _repoTodolist.FindAll(x => x.MixingInfoID == model.MixingInfoID).ToListAsync();
                         todolist.ForEach(todo =>
                         {
@@ -316,6 +319,9 @@ namespace DMR_API._Services.Services
                             item.Status = true;
                             _repoStir.Update(item);
                             await _repoStir.SaveAll();
+
+                            //var stirList = await _repoStir.FindAll(x => x.MixingInfoID == model.MixingInfoID)
+                            //    .OrderBy(x => x.CreatedTime).ToListAsync();
 
                             var todolist = await _repoTodolist.FindAll(x => x.MixingInfoID == model.MixingInfoID).ToListAsync();
                             todolist.ForEach(todo =>

@@ -26,7 +26,8 @@ declare var require: any;
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  providers: [TranslateService]
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
   public data: any;

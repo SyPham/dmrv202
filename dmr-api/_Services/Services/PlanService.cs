@@ -602,7 +602,6 @@ namespace DMR_API._Services.Services
             var deliver = buildingGlue.Sum();
             return $"{Math.Round(deliver / 1000, 2)}kg/{Math.Round(CalculateGlueTotal(mixingInfo), 2)}";
         }
-
         #endregion
 
         #region Helper
@@ -726,12 +725,16 @@ namespace DMR_API._Services.Services
                 try
                 {
                     var plan = _mapper.Map<Plan>(model);
-                    var checkExist = await _repoPlan.FindAll().OrderByDescending(x=> x.CreatedDate).FirstOrDefaultAsync(x => x.BuildingID == model.BuildingID && x.DueDate.Date == model.DueDate.Date);
+                    var checkExist = await _repoPlan.FindAll().OrderByDescending(x => x.CreatedDate).FirstOrDefaultAsync(x => x.BuildingID == model.BuildingID && x.DueDate.Date == model.DueDate.Date);
                     // Neu ton tai thi kiem tra xem co phai la ngung chuyen khong
-                    if (checkExist != null) {
-                        if (checkExist.IsOffline) {
+                    if (checkExist != null)
+                    {
+                        if (checkExist.IsOffline)
+                        {
                             plan.StartWorkingTime = DateTime.Now.ToRemoveSecond();
-                        } else { // Khong phai la ngung chuyen thi thong bao da ton tại
+                        }
+                        else
+                        { // Khong phai la ngung chuyen thi thong bao da ton tại
                             return false;
                         }
                     }
@@ -1311,7 +1314,7 @@ namespace DMR_API._Services.Services
 
                     var planLine = await _repoPlan.FindAll(x => x.IsOffline == false && ct.Date == x.DueDate.Date && x.BuildingID == plan.BuildingID).ToListAsync();
                     var startWorkingTime = ct;
-                    var check = planLine.Any(x => startWorkingTime > x.StartWorkingTime && startWorkingTime >= x.FinishWorkingTime);
+                    // var check = planLine.Any(x => startWorkingTime > x.StartWorkingTime && startWorkingTime >= x.FinishWorkingTime);
                     foreach (var item in planLine)
                     {
                         if (startWorkingTime < item.FinishWorkingTime)
@@ -1446,6 +1449,8 @@ namespace DMR_API._Services.Services
                     // B4: Vào bảng Todolist lấy hết danh sách ra theo planID điều kiện là isdelete = true nếu có tăng ca thì mở lại, Cập nhật lại là false
 
                     var timeOfDay = ct.ToRemoveSecond().TimeOfDay;
+                    var dueDate = planUpdate.DueDate.Date;
+
                     var todoDelete = await _repoToDoList.FindAll(x => x.EstimatedStartTime.TimeOfDay >= timeOfDay && x.PlanID == planID && x.IsDelete == true).ToListAsync();
                     // Neu khong tang ca thi khoi mo tang ca ra
                     if (planUpdate.IsOvertime == false)
@@ -1460,11 +1465,11 @@ namespace DMR_API._Services.Services
                     await _repoToDoList.SaveAll();
 
                     // B5: Vào bảng DispatchList lấy hết danh sách ra theo planID điều kiện là isdelete = true Neu khong tang ca thi khoi mo tang ca ra, Cập nhật lại là false
-                    var deletingList = await _repoDispatchList.FindAll(x => x.EstimatedStartTime.TimeOfDay >= timeOfDay && x.EstimatedFinishTime.TimeOfDay > timeOfDay && x.PlanID == planID && x.IsDelete == true).ToListAsync();
+                    var deletingList = await _repoDispatchList.FindAll(x => x.EstimatedStartTime.Date == dueDate && x.EstimatedStartTime.TimeOfDay >= timeOfDay && x.EstimatedFinishTime.TimeOfDay > timeOfDay && x.PlanID == planID && x.IsDelete == true).ToListAsync();
                     // Neu khong tang ca thi khoi mo tang ca ra
                     if (planUpdate.IsOvertime == false)
                     {
-                        deletingList = deletingList.Where(x => x.EstimatedStartTime.TimeOfDay < finishWorkingTimeOfWorkplan.TimeOfDay).ToList();
+                        deletingList = deletingList.Where(x => x.EstimatedStartTime.Date == dueDate && x.EstimatedStartTime.TimeOfDay < finishWorkingTimeOfWorkplan.TimeOfDay).ToList();
                     }
                     deletingList.ForEach(item =>
                     {
@@ -1531,8 +1536,8 @@ namespace DMR_API._Services.Services
 
 
                     // B3: Vào bảng Todolist lấy hết danh sách ra theo planID điều kiện là isdelete = false, Cập nhật lại là true
-
-                    var todoDelete = await _repoToDoList.FindAll(x => x.EstimatedStartTime.TimeOfDay >= timeOfDay && x.PlanID == planID && x.IsDelete == false).ToListAsync();
+                    var dueDate = planUpdate.DueDate.Date;
+                    var todoDelete = await _repoToDoList.FindAll(x => x.EstimatedStartTime.Date == dueDate &&x.EstimatedStartTime.TimeOfDay >= timeOfDay && x.PlanID == planID && x.IsDelete == false).ToListAsync();
                     todoDelete.ForEach(item =>
                     {
                         item.IsDelete = true;
@@ -1541,7 +1546,7 @@ namespace DMR_API._Services.Services
                     await _repoToDoList.SaveAll();
 
                     // B4: Vào bảng DispatchList lấy hết danh sách ra theo planID điều kiện là isdelete = false, Cập nhật lại là true
-                    var deletingList = await _repoDispatchList.FindAll(x => x.EstimatedStartTime.TimeOfDay >= timeOfDay && x.EstimatedFinishTime.TimeOfDay > timeOfDay && x.PlanID == planID && x.IsDelete == false).ToListAsync();
+                    var deletingList = await _repoDispatchList.FindAll(x =>  x.EstimatedStartTime.Date == dueDate && x.EstimatedStartTime.TimeOfDay >= timeOfDay && x.EstimatedFinishTime.TimeOfDay > timeOfDay && x.PlanID == planID && x.IsDelete == false).ToListAsync();
                     deletingList.ForEach(item =>
                     {
                         item.IsDelete = true;

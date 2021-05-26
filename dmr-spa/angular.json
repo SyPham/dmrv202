@@ -17,7 +17,7 @@
           ],
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "D:\\henry\\a_2021\\b_deployment\\dmrv216-spa",
+            "outputPath": "D:\\henry\\a_2021\\b_deployment\\dmrv217-spa",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",

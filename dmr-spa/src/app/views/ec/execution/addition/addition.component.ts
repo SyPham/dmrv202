@@ -1,3 +1,4 @@
+import { Query } from '@syncfusion/ej2-data';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { GridComponent } from '@syncfusion/ej2-angular-grids';
 import { AdditionService } from 'src/app/_core/_service/addition.service';
@@ -6,6 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from 'src/app/_core/_component/base.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForOf } from '@angular/common';
+import { EmitType } from '@syncfusion/ej2-base';
+import { FilteringEventArgs, highlightSearch } from '@syncfusion/ej2-angular-dropdowns';
 
 @Component({
   selector: 'app-addition',
@@ -33,7 +36,11 @@ export class AdditionComponent extends BaseComponent implements OnInit {
   pageSettings = { pageCount: 20, pageSizes: true, pageSize: 10 };
   fieldsChemical: object = { text: 'name', value: 'name' };
   fieldsLine: object = { text: 'name', value: 'id' };
-  fieldsBPFC: object = { text: 'name', value: 'name' };
+  public fieldsBPFC: object = {
+    text: 'name', value: 'name', tooltip: 'name', itemCreated: (e: any) => {
+      highlightSearch(e.item, this.queryString, true, 'Contains');
+    }
+  };
   filterSettings = { type: 'Excel' };
   bpfcData: any = [];
   bpfcEstablishID = 0;
@@ -44,6 +51,18 @@ export class AdditionComponent extends BaseComponent implements OnInit {
   lines: any[] = [];
   addData: any[];
   editData: any[];
+  public onFiltering: EmitType<FilteringEventArgs> = (
+    e: FilteringEventArgs
+  ) => {
+    this.queryString = e.text;
+    let query: Query = new Query();
+    // frame the query based on search string with filter type.
+    query =
+      e.text !== '' ? query.where('name', 'contains', e.text, true) : query;
+    // pass the filter data source, filter query to updateData method.
+    e.updateData(this.bpfcData as any, query);
+  }
+  queryString: string;
   constructor(
     public activeModal: NgbActiveModal,
     private additionService: AdditionService,

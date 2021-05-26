@@ -13,7 +13,7 @@
         <ejs-grid #grid id='grid' [dataSource]='data' allowSorting='true' allowResizing='true' allowPaging="true"
           (rowDataBound)='rowDB($event)' [pageSettings]='pageSettings' allowFiltering='true'
           [filterSettings]='filterSettings' [sortSettings]="sortSettings" [editSettings]='editSettings'
-          [toolbar]='toolbarOptions' [allowExcelExport]='true' [enablePersistence]='true' [height]='gridHeight' [frozenRows]='0' allowResizing='true' (created)="createdSearch($event)"
+          [toolbar]='toolbarOptions' [allowExcelExport]='true' [enablePersistence]='true' allowResizing='true' (created)="createdSearch($event)"
           gridLines='Both' showColumnMenu='true' (dataBound)='dataBound($event)' (toolbarClick)='toolbarClick($event)'
           (actionBegin)='actionBegin($event)' [searchSettings]='searchOptions'>
           <e-columns>
@@ -56,7 +56,7 @@
               headerText='Approval By Supervisor'>
             </e-column>
             <e-column field='season' textAlign='Center' width=100 headerText='Season'></e-column>
-            <e-column field='option' freeze='Right' isPrimaryKey='true' textAlign='Center' headerText='-- Option --'
+            <e-column field='option' isPrimaryKey='true' textAlign='Center' headerText='-- Option --'
               width=170>
               <ng-template #template let-data>
                 <!-- detail btn -->

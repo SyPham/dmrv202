@@ -157,7 +157,7 @@ namespace DMR_API._Services.Services
                 {
                 UserNames = item.Select(x => x.UserName).ToList(),
                     UserIDList = item.Select(x => x.UserID).ToList(),
-                    UserList = item.Select(x => new UserList { MailingID = x.ID, ID = x.UserID, Email = x.Email}).ToList(),
+                    UserList = item.Select(x => new UserList { MailingID = x.ID, ID = x.UserID, Email = x.Email }).ToList(),
                     TimeSend = item.First().TimeSend,
                     Frequency = item.Key.Frequency,
                     Report = item.Key.Report,
@@ -203,10 +203,11 @@ namespace DMR_API._Services.Services
 
         public async Task<List<MailingDto>> GetAllByFrequencyAndReport(string frequency, string report)
         {
+
             var response = await client.GetAsync($"Users/GetAll");
             string json = response.Content.ReadAsStringAsync().Result;
             var users = JsonConvert.DeserializeObject<List<UserDto>>(json);
-            var model = await _repoMailing.FindAll(x=> x.Frequency == frequency && x.Report == report).ProjectTo<MailingDto>(_configMapper).ToListAsync();
+            var model = await _repoMailing.FindAll(x => x.Frequency == frequency && x.Report == report).ProjectTo<MailingDto>(_configMapper).ToListAsync();
             var result = from a in users
                          join b in model on a.ID equals b.UserID
                          select new MailingDto
@@ -216,10 +217,11 @@ namespace DMR_API._Services.Services
                              UserName = a.Username,
                              Report = b.Report,
                              Email = b.Email,
+                             PathName = b.PathName,
                              TimeSend = b.TimeSend,
                              Frequency = b.Frequency
                          };
-            var groupBy = result.ToList().GroupBy(x => x.Frequency);
+            var groupBy = result.ToList().GroupBy(x => new { x.Frequency, x.Report });
             var list = new List<MailingDto>();
             foreach (var item in groupBy)
             {
@@ -229,8 +231,9 @@ namespace DMR_API._Services.Services
                     UserIDList = item.Select(x => x.UserID).ToList(),
                     UserList = item.Select(x => new UserList { MailingID = x.ID, ID = x.UserID, Email = x.Email }).ToList(),
                     TimeSend = item.First().TimeSend,
-                    Frequency = item.Key,
-                    Report = item.First().Report,
+                    Frequency = item.Key.Frequency,
+                    Report = item.Key.Report,
+                    PathName = item.First().PathName,
                     Email = item.First().Email,
                 });
             }
