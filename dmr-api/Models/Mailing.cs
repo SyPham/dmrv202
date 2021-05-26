@@ -11,6 +11,7 @@ namespace DMR_API.Models
         public string Email { get; set; }
         public int UserID { get; set; }
         public string Frequency { get; set; }
+        public string PathName { get; set; }
         public string Report { get; set; }
         public DateTime TimeSend { get; set; }
     }

@@ -602,7 +602,6 @@ namespace DMR_API._Services.Services
             var deliver = buildingGlue.Sum();
             return $"{Math.Round(deliver / 1000, 2)}kg/{Math.Round(CalculateGlueTotal(mixingInfo), 2)}";
         }
-
         #endregion
 
         #region Helper
@@ -725,9 +724,20 @@ namespace DMR_API._Services.Services
             {
                 try
                 {
-                    var checkExist = await _repoPlan.FindAll().AnyAsync(x => x.BuildingID == model.BuildingID && x.DueDate.Date == model.DueDate.Date);
-                    if (checkExist) return false;
                     var plan = _mapper.Map<Plan>(model);
+                    var checkExist = await _repoPlan.FindAll().OrderByDescending(x => x.CreatedDate).FirstOrDefaultAsync(x => x.BuildingID == model.BuildingID && x.DueDate.Date == model.DueDate.Date);
+                    // Neu ton tai thi kiem tra xem co phai la ngung chuyen khong
+                    if (checkExist != null)
+                    {
+                        if (checkExist.IsOffline)
+                        {
+                            plan.StartWorkingTime = DateTime.Now.ToRemoveSecond();
+                        }
+                        else
+                        { // Khong phai la ngung chuyen thi thong bao da ton tại
+                            return false;
+                        }
+                    }
                     DateTime dt = DateTime.Now.ToLocalTime().ToRemoveSecond();
                     plan.CreatedDate = dt;
                     plan.CreateBy = userID;
@@ -1303,9 +1313,9 @@ namespace DMR_API._Services.Services
                     _repoPlan.Update(plan);
                     await _repoPlan.SaveAll();
 
-                    var planLine = await _repoPlan.FindAll(x => ct.Date == x.DueDate.Date && x.BuildingID == plan.BuildingID).ToListAsync();
+                    var planLine = await _repoPlan.FindAll(x => x.IsOffline == false && ct.Date == x.DueDate.Date && x.BuildingID == plan.BuildingID).ToListAsync();
                     var startWorkingTime = ct;
-                    var check = planLine.Any(x => startWorkingTime > x.StartWorkingTime && startWorkingTime >= x.FinishWorkingTime);
+                    // var check = planLine.Any(x => startWorkingTime > x.StartWorkingTime && startWorkingTime >= x.FinishWorkingTime);
                     foreach (var item in planLine)
                     {
                         if (startWorkingTime < item.FinishWorkingTime)

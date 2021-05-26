@@ -285,6 +285,8 @@ namespace DMR_API._Services.Services
                         item.FinishStiringTime = model.EndTime;
                         item.Status = true;
                         _repoStir.Update(item);
+                        await _repoStir.SaveAll();
+
                         //var stirList = await _repoStir.FindAll(x => x.MixingInfoID == model.MixingInfoID)
                         //    .OrderBy(x => x.CreatedTime).ToListAsync();
 
@@ -294,7 +296,8 @@ namespace DMR_API._Services.Services
                             todo.StartStirTime = item.StartTime;
                             todo.FinishStirTime = item.FinishStiringTime;
                         });
-                        await _repoStir.SaveAll();
+                        _repoTodolist.UpdateRange(todolist);
+                        await _repoTodolist.SaveAll();
                     }
                     else
                     {
@@ -321,6 +324,8 @@ namespace DMR_API._Services.Services
                             item.FinishStiringTime = currentTime;
                             item.Status = true;
                             _repoStir.Update(item);
+                            await _repoStir.SaveAll();
+
                             //var stirList = await _repoStir.FindAll(x => x.MixingInfoID == model.MixingInfoID)
                             //    .OrderBy(x => x.CreatedTime).ToListAsync();
 
@@ -330,11 +335,12 @@ namespace DMR_API._Services.Services
                                 todo.StartStirTime = item.StartTime;
                                 todo.FinishStirTime = item.FinishStiringTime;
                             });
-                            await _repoStir.SaveAll();
+                            _repoTodolist.UpdateRange(todolist);
+                            await _repoTodolist.SaveAll();
+
                         }
                         else // nguoc lai thi khuay them
                         {
-
                             item.StandardDuration = standardDuration;
                             item.ActualDuration = temp;
                             item.StartTime = rawDataModel.LastOrDefault().CreatedTime;

@@ -14,6 +14,7 @@ namespace DMR_API.DTO
         public string Email { get; set; }
         public string UserName { get; set; }
         public int UserID { get; set; }
+        public string PathName { get; set; }
         public string Frequency { get; set; }
         public string Report { get; set; }
         public DateTime TimeSend { get; set; }
