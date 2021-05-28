@@ -164,6 +164,7 @@ export class IncomingComponent implements OnInit, OnDestroy, AfterViewInit {
           buildingName = 'E';
         }
         const chemical = this.findIngredientCode(qrcode);
+        
         if (this.checkin === true) {
           if (this.checkCode === true) {
             const userID = JSON.parse(localStorage.getItem('user')).user.id;

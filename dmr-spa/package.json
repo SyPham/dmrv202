@@ -7,7 +7,7 @@
     "start": "ng serve --open --host 10.4.4.224 --port 1280 --disable-host-check",
     "pro": "ng serve --open --host 10.4.5.174 --port 1280 --disable-host-check",
     "dev_henry": "ng serve --open --host 10.4.4.224 --port 1000 --disable-host-check",
-    "dev_leo": "ng serve --open --host 10.4.4.92 --port 1000 --disable-host-check",
+    "dev_leo": "ng serve --open --host 10.4.5.132 --port 1000 --disable-host-check",
     "build": "ng build --prod",
     "build2": "ng build --prod --stats-json --source-map=false",
     "test": "ng test",

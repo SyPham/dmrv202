@@ -180,7 +180,6 @@ namespace ScalingMachineService
                 }
                 else
                 {
-
                     //_serialPort.WriteLine(
                     //    String.Format("<{0}>: {1}", name, message));
                 }

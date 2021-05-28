@@ -5,11 +5,18 @@
 const SYSTEM_CODE = 3;
 export const environment = {
   production: false,
+  // systemCode: SYSTEM_CODE,
+  // apiUrlEC: '/api/',
+  // apiUrl: '/api/',
+  // hub: '/ec-hub',
+  // scalingHubLocal: '/scalingHub',
   systemCode: SYSTEM_CODE,
-  apiUrlEC: '/api/',
-  apiUrl: '/api/',
-  hub: '/ec-hub',
-  scalingHubLocal: '/scalingHub',
+  apiUrlEC: 'http://10.4.5.132:1009/api/',
+  apiUrl: 'http://10.4.5.174:108/api/',
+  apiUrl2: 'http://10.4.5.132:1009/api/',
+  hub: 'http://10.4.5.132:1009/ec-hub',
+  scalingHub: 'http://10.4.5.132:1009/ec-hub',
+  scalingHubLocal: 'http://localhost:5001/scalingHub',
 };
 
 /*

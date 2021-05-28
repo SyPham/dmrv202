@@ -205,14 +205,14 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
     if (signalr.CONNECTION_HUB.state === HubConnectionState.Connected) {
       signalr.CONNECTION_HUB.on('ReloadTodo', () => {
         if (this.isShowTab === this.TODO) {
-          this.loadData();
+          // this.loadData();
           console.log('Reload Todo', '');
         }
       });
 
       signalr.CONNECTION_HUB.on('ReloadDispatch', () => {
         if (this.isShowTab === this.DISPATCH) {
-          this.loadData();
+          // this.loadData();
           console.log('Reload dispatch', '');
         }
       });
@@ -478,6 +478,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
     //     break;
     // }
   }
+
   EVA_UVList() {
     this.bottomFactoryService.EVAUVList(this.buildingID).subscribe((res: any) => {
       this.EVAUVData = res.data;
@@ -494,6 +495,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
       this.percentageOfDoneDispatch = res.percentageOfDoneDispatch;
     });
   }
+
   dispatchList() {
     this.todolistService.dispatchList(this.buildingID).subscribe((res: any) => {
       this.dispatchData = res.data;
@@ -510,6 +512,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
       this.percentageOfDoneDispatch = res.percentageOfDoneDispatch;
     });
   }
+
   dispatchListDelay() {
     this.todolistService.dispatchListDelay(this.buildingID).subscribe((res: any) => {
       this.dispatchData = res.data;
@@ -526,6 +529,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
       this.percentageOfDoneDispatch = res.percentageOfDoneDispatch;
     });
   }
+
   todo() {
     this.todolistService.todo(this.buildingID).subscribe(res => {
       this.data = res.data;
@@ -542,6 +546,7 @@ export class TodolistComponent implements OnInit, OnDestroy, AfterViewInit {
       this.percentageOfDoneDispatch = res.percentageOfDoneDispatch;
     });
   }
+
   todoAddition() {
     this.todolistService.todoAddition(this.buildingID).subscribe(res => {
       //  Thêm bởi Quỳnh (Leo 1/28/2021 11:46)

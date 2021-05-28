@@ -38,6 +38,7 @@ namespace DMR_API._Services.Interface
         Task<bool> UpdateConsumptionOfBuildingIngredientReport(UpdateConsumpDto entity );
 
         Task<bool> CheckExistsName(string name);
+        Task<bool> CheckExistsIngredient(string name, string material);
         Task<ResponseDetail<object>> Rate();
         Task<bool> CheckIncoming(string ingredientName, string batch, string building);
 
